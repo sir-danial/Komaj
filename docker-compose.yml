@@ -1,0 +1,20 @@
+services:
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+      - sqlite-data:/data
+    ports:
+      - "8000:8000"
+    environment:
+      DJANGO_SETTINGS_MODULE: config.settings.dev
+      DEBUG: "True"
+      DJANGO_SECRET_KEY: dev-secret-change-me
+      ALLOWED_HOSTS: "*"
+      SQLITE_PATH: /data/db.sqlite3
+      USE_S3_STORAGE: "False"
+      ZARINPAL_SANDBOX: "True"
+
+volumes:
+  sqlite-data:
