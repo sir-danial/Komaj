@@ -1,0 +1,26 @@
+{% comment %}
+Select field.
+Params:
+  name (str) *
+  label (str)
+  options (list of (value, label))
+  value (str)            — مقدار انتخاب‌شده
+  placeholder (str)      — اگر پر شود به‌عنوان گزینه غیرفعال اول نمایش داده می‌شود
+  required (bool)
+  helper (str)
+  error (str)
+  extra_class (str)
+{% endcomment %}
+<div class="w-full">
+    {% if label %}<label for="{{ name }}" class="label">{{ label }}{% if required %} <span class="text-pomegranate">*</span>{% endif %}</label>{% endif %}
+    <select id="{{ name }}" name="{{ name }}"
+            class="field {% if error %}field-error{% endif %} {{ extra_class }}"
+            {% if required %}required aria-required="true"{% endif %}>
+        {% if placeholder %}<option value="" disabled {% if not value %}selected{% endif %}>{{ placeholder }}</option>{% endif %}
+        {% for opt_value, opt_label in options %}
+            <option value="{{ opt_value }}" {% if opt_value == value %}selected{% endif %}>{{ opt_label }}</option>
+        {% endfor %}
+    </select>
+    {% if error %}<p class="error-text">{{ error }}</p>
+    {% elif helper %}<p class="helper">{{ helper }}</p>{% endif %}
+</div>

@@ -1,0 +1,49 @@
+{% load komaj_extras %}
+{% comment %}
+Product card.
+Params:
+  product (dict-like)
+    .name          *
+    .href          *
+    .image_url     *
+    .image_alt
+    .price_rial    * (Decimal; قیمت به ریال)
+    .unit_label      — «کیلوگرم» | «عدد» | «۲۰۰ گرم» ...
+    .weight_badge    — متن badge (مثل «۰.۵kg+»)
+    .is_fresh (bool) — نشان «تازه پخت»
+    .old_price_rial  — برای حالت sale
+{% endcomment %}
+<article class="card card-interactive flex flex-col">
+    <a href="{{ product.href }}" class="block relative overflow-hidden rounded-lg">
+        <div class="aspect-product bg-sand">
+            {% if product.image_url %}
+                <img src="{{ product.image_url }}" alt="{{ product.image_alt|default:product.name }}" loading="lazy" class="h-full w-full object-cover">
+            {% endif %}
+        </div>
+        {% if product.weight_badge %}
+            <span class="badge badge-sand absolute top-3 end-3">{{ product.weight_badge }}</span>
+        {% endif %}
+        {% if product.is_fresh %}
+            <span class="badge badge-pistachio absolute top-3 start-3">🌿 تازه پخت</span>
+        {% endif %}
+    </a>
+
+    <div class="mt-3 flex flex-col gap-1.5">
+        <h3 class="text-h3 text-espresso line-clamp-2">
+            <a href="{{ product.href }}" class="hover:text-saffron">{{ product.name }}</a>
+        </h3>
+        <div class="flex items-baseline gap-2">
+            {% if product.old_price_rial %}
+                <span class="price-old text-body-sm">{{ product.old_price_rial|toman }}</span>
+                <span class="price-sale text-body-lg">{{ product.price_rial|toman }}</span>
+            {% else %}
+                <span class="price text-body-lg">{{ product.price_rial|toman }}</span>
+            {% endif %}
+            <span class="text-body-sm text-espresso/60">تومان{% if product.unit_label %} / {{ product.unit_label }}{% endif %}</span>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a href="{{ product.href }}" class="btn btn-primary w-full">افزودن به سبد</a>
+    </div>
+</article>

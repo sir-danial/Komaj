@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% load komaj_extras %}
+
+{% block title %}کماج — شیرینی سنتی، تازه، خانه‌پز{% endblock %}
+
+{% block content %}
+<section class="relative overflow-hidden rounded-xl bg-sand/50 mt-8 bg-corner-pattern bg-right-top">
+    <div class="grid md:grid-cols-2 gap-8 items-center p-8 md:p-14">
+        <div class="space-y-5 order-2 md:order-1">
+            <p class="badge badge-pistachio w-fit">🌿 تازه پخت خانگی</p>
+            <h1 class="font-display text-display text-espresso leading-tight">شیرینی سنتی،<br>از کرمان تا در خانه شما</h1>
+            <p class="text-body-lg text-espresso/80 max-w-md">کلمپه، باقلوا، قوطی‌های شکلات و مکمل سنتی — با مواد تازه، بسته‌بندی گرم و ارسال سریع به سراسر ایران.</p>
+            <div class="flex flex-wrap gap-3">
+                <a href="/c/sweets/" class="btn btn-primary btn-lg">خرید شیرینی کیلویی</a>
+                <a href="/c/jars/" class="btn btn-secondary btn-lg">مشاهده قوطی‌ها</a>
+            </div>
+        </div>
+        <div class="order-1 md:order-2 aspect-[4/3] rounded-xl bg-soft-gold/50 flex items-center justify-center text-espresso/30">
+            <span class="text-body-sm">🖼 تصویر hero (به زودی)</span>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="flex items-baseline justify-between mb-6">
+        <h2 class="text-h2">دسته‌بندی‌ها</h2>
+    </div>
+    <div class="grid gap-4 md:grid-cols-2">
+        <a href="/c/sweets/" class="card card-interactive flex items-center gap-5 bg-sand/40">
+            <div class="h-24 w-24 rounded-lg bg-cream flex items-center justify-center text-h2">🍯</div>
+            <div>
+                <h3 class="text-h3">شیرینی کیلویی</h3>
+                <p class="text-body-sm text-espresso/70 mt-1">کلمپه، باقلوا، سوهان — دست‌ساز و تازه</p>
+            </div>
+        </a>
+        <a href="/c/jars/" class="card card-interactive flex items-center gap-5 bg-sand/40">
+            <div class="h-24 w-24 rounded-lg bg-cream flex items-center justify-center text-h2">🫙</div>
+            <div>
+                <h3 class="text-h3">قوطی‌های مکمل</h3>
+                <p class="text-body-sm text-espresso/70 mt-1">شکلات، حلوا، ارده — در قوطی‌های ۲۰۰ و ۶۰۰ گرمی</p>
+            </div>
+        </a>
+    </div>
+</section>
+
+<section class="section">
+    <div class="flex items-baseline justify-between mb-6">
+        <h2 class="text-h2">پرفروش‌ترین‌ها</h2>
+        <a href="/products/" class="text-body-sm text-saffron-dark hover:text-saffron">مشاهده همه ←</a>
+    </div>
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {% for p in featured_products %}
+            {% include "components/product_card.html" with product=p %}
+        {% endfor %}
+    </div>
+</section>
+
+<section class="section">
+    <div class="rounded-xl bg-cream border border-sand p-8 md:p-12">
+        <h2 class="text-h2 mb-6 text-center">چرا کماج؟</h2>
+        <div class="grid gap-8 md:grid-cols-3 text-center">
+            <div>
+                <div class="h-14 w-14 mx-auto mb-3 rounded-full bg-pistachio/15 flex items-center justify-center text-h2">🌿</div>
+                <h3 class="text-h3 mb-1">تازه پخت خانگی</h3>
+                <p class="text-body-sm text-espresso/70">هر سفارش پس از ثبت، تازه آماده می‌شود.</p>
+            </div>
+            <div>
+                <div class="h-14 w-14 mx-auto mb-3 rounded-full bg-saffron/20 flex items-center justify-center text-h2">📦</div>
+                <h3 class="text-h3 mb-1">ارسال به سراسر ایران</h3>
+                <p class="text-body-sm text-espresso/70">بسته‌بندی امن با پست پیشتاز یا پیک.</p>
+            </div>
+            <div>
+                <div class="h-14 w-14 mx-auto mb-3 rounded-full bg-soft-gold/60 flex items-center justify-center text-h2">🔒</div>
+                <h3 class="text-h3 mb-1">پرداخت امن</h3>
+                <p class="text-body-sm text-espresso/70">درگاه زرین‌پال — پشتیبانی از اینماد.</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

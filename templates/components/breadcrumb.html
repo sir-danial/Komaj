@@ -1,0 +1,19 @@
+{% comment %}
+Breadcrumb.
+Params:
+  items (list of {href, label}) — آخرین آیتم به‌عنوان صفحه جاری، بدون لینک
+{% endcomment %}
+<nav aria-label="مسیر صفحه" class="text-body-sm text-espresso/70 py-3">
+    <ol class="flex items-center gap-2 flex-wrap">
+        {% for item in items %}
+            <li class="flex items-center gap-2">
+                {% if forloop.last %}
+                    <span aria-current="page" class="text-espresso">{{ item.label }}</span>
+                {% else %}
+                    <a href="{{ item.href }}" class="hover:text-saffron">{{ item.label }}</a>
+                    <span class="text-espresso/30" aria-hidden="true">›</span>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ol>
+</nav>

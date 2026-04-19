@@ -1,0 +1,33 @@
+{% comment %}
+Inline alert / banner.
+Params:
+  tone (str)  — success | warning | error | info  (پیش‌فرض info)
+  title (str)
+  message (str)
+  icon (bool) — پیش‌فرض True
+{% endcomment %}
+{% with tone=tone|default:"info" %}
+{% if tone == "success" %}
+    {% with bg="bg-pistachio/10" border="border-pistachio/40" text="text-pistachio-dark" %}
+    <div role="status" class="rounded-md border {{ border }} {{ bg }} px-4 py-3 text-body-sm {{ text }}">
+        {% if title %}<div class="font-semibold mb-0.5">{{ title }}</div>{% endif %}
+        <div>{{ message }}</div>
+    </div>
+    {% endwith %}
+{% elif tone == "warning" %}
+    <div role="status" class="rounded-md border border-warning/40 bg-warning/10 px-4 py-3 text-body-sm text-warning">
+        {% if title %}<div class="font-semibold mb-0.5">{{ title }}</div>{% endif %}
+        <div>{{ message }}</div>
+    </div>
+{% elif tone == "error" %}
+    <div role="alert" class="rounded-md border border-pomegranate/40 bg-pomegranate/10 px-4 py-3 text-body-sm text-pomegranate-dark">
+        {% if title %}<div class="font-semibold mb-0.5">{{ title }}</div>{% endif %}
+        <div>{{ message }}</div>
+    </div>
+{% else %}
+    <div role="status" class="rounded-md border border-info/40 bg-info/10 px-4 py-3 text-body-sm text-info">
+        {% if title %}<div class="font-semibold mb-0.5">{{ title }}</div>{% endif %}
+        <div>{{ message }}</div>
+    </div>
+{% endif %}
+{% endwith %}

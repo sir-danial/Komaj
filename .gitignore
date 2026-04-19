@@ -59,5 +59,8 @@ Thumbs.db
 .coverage
 htmlcov/
 
-# Node (for future tailwind build)
+# Node (for tailwind build)
 node_modules/
+
+# Compiled assets (rebuilt via `npm run build:css`)
+static/css/dist/

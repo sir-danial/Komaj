@@ -1,0 +1,136 @@
+@import "@fontsource-variable/vazirmatn/index.css";
+@import "@fontsource/lalezar/400.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    direction: rtl;
+    font-family: theme("fontFamily.sans");
+    background-color: theme("colors.cream");
+    color: theme("colors.espresso");
+    font-feature-settings: "ss01", "ss02";
+  }
+
+  body {
+    min-height: 100dvh;
+    background-color: theme("colors.cream");
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'><defs><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.18 0 0 0 0 0.12 0 0 0 0 0.08 0 0 0 0.5 0'/></filter></defs><rect width='100%' height='100%' filter='url(%23n)' opacity='0.04'/></svg>");
+  }
+
+  :focus-visible {
+    outline: none;
+    box-shadow: theme("boxShadow.focus");
+    border-radius: theme("borderRadius.sm");
+  }
+
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-md font-medium transition-all select-none disabled:opacity-50 disabled:cursor-not-allowed;
+    min-block-size: 44px;
+    padding-inline: 20px;
+  }
+  .btn-sm {
+    min-block-size: 36px;
+    padding-inline: 14px;
+    @apply text-body-sm;
+  }
+  .btn-lg {
+    min-block-size: 52px;
+    padding-inline: 28px;
+    @apply text-body-lg;
+  }
+  .btn-primary {
+    @apply bg-saffron text-cream hover:bg-saffron-dark;
+  }
+  .btn-secondary {
+    @apply bg-cream text-espresso border border-espresso/80 hover:bg-sand;
+  }
+  .btn-ghost {
+    @apply bg-transparent text-saffron hover:bg-saffron/10;
+  }
+  .btn-danger {
+    @apply bg-pomegranate text-cream hover:bg-pomegranate-dark;
+  }
+
+  .field {
+    @apply block w-full rounded-md border border-espresso/20 bg-cream px-4 py-2.5 text-body text-espresso placeholder:text-espresso/40 focus:border-saffron focus:ring-0;
+  }
+  .field-error {
+    @apply border-pomegranate;
+  }
+
+  .label {
+    @apply block mb-1.5 text-body-sm font-medium text-espresso;
+  }
+  .helper {
+    @apply mt-1 text-body-sm text-espresso/60;
+  }
+  .error-text {
+    @apply mt-1 text-body-sm text-pomegranate;
+  }
+
+  .card {
+    @apply rounded-xl bg-cream p-4 shadow-sm transition-shadow;
+  }
+  .card-interactive {
+    @apply hover:shadow-md;
+  }
+
+  .badge {
+    @apply inline-flex items-center rounded-full px-2.5 py-1 text-tiny font-medium;
+  }
+  .badge-sand {
+    @apply bg-sand text-espresso;
+  }
+  .badge-pistachio {
+    @apply bg-pistachio/15 text-pistachio-dark;
+  }
+  .badge-saffron {
+    @apply bg-saffron/15 text-saffron-dark;
+  }
+  .badge-pomegranate {
+    @apply bg-pomegranate/10 text-pomegranate-dark;
+  }
+
+  .price {
+    @apply tabular font-semibold text-espresso;
+  }
+  .price-old {
+    @apply tabular text-espresso/50 line-through;
+  }
+  .price-sale {
+    @apply tabular font-semibold text-pomegranate;
+  }
+
+  .skip-link {
+    @apply sr-only focus:not-sr-only focus:absolute focus:top-2 focus:start-2 focus:z-50 focus:rounded-md focus:bg-espresso focus:px-4 focus:py-2 focus:text-cream;
+  }
+
+  .container-page {
+    @apply mx-auto w-full max-w-7xl px-4 md:px-6 lg:px-8;
+  }
+
+  .section {
+    padding-block: theme("spacing.section-mobile");
+  }
+  @screen md {
+    .section {
+      padding-block: theme("spacing.section-desktop");
+    }
+  }
+}
+
+@layer utilities {
+  .bg-corner-pattern {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'><g fill='none' stroke='%23C79A2C' stroke-opacity='0.12' stroke-width='1'><path d='M10 90 L90 10 L170 90 L90 170 Z'/><path d='M30 90 L90 30 L150 90 L90 150 Z'/><path d='M50 90 L90 50 L130 90 L90 130 Z'/></g></svg>");
+    background-repeat: no-repeat;
+  }
+}

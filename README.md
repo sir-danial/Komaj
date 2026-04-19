@@ -5,6 +5,8 @@
 **وضعیت:** اسکلت فاز ۱ (MVP، ~۱۰ سفارش/هفته، بدون Redis/Postgres/Celery).
 
 برای جزئیات معماری و تصمیمات فنی، [docs/research-report.md](docs/research-report.md) را ببینید.
+برای سیستم طراحی UI (پالت، تایپ، Moodboard، پلن فرانت)، [docs/design-system.md](docs/design-system.md) را ببینید.
+برای wireframe صفحات کلیدی، [docs/wireframes.md](docs/wireframes.md) را ببینید.
 
 ## استک فاز ۱
 
@@ -23,7 +25,14 @@ settings کاملاً env-driven است؛ ارتقا به Postgres/Redis در ف
 Komaj/
 ├── config/               # settings (base/dev/prod)، urls، wsgi، asgi
 ├── apps/
-│   └── core/            # healthz و home
+│   └── core/            # healthz، home، styleguide، templatetag کمکی
+├── templates/           # base.html، partials (header/footer)، components
+├── static/
+│   ├── css/src/         # input.css (Tailwind source)
+│   ├── css/dist/        # output.css (build artifact — gitignored)
+│   └── img/
+├── tailwind.config.js   # tokens پالت + تایپ + shadow + RTL content scan
+├── package.json         # Tailwind + Vazirmatn self-host via fontsource
 ├── data/                # SQLite محلی (gitignore)
 ├── docs/
 ├── Dockerfile
@@ -32,6 +41,50 @@ Komaj/
 ├── manage.py
 └── requirements.txt
 ```
+
+## فرانت (Tailwind + Vazirmatn)
+
+سیستم طراحی و wireframeها در [docs/design-system.md](docs/design-system.md) و [docs/wireframes.md](docs/wireframes.md). tokens رنگ/تایپ/فاصله در `tailwind.config.js`. RTL با logical properties (`ms-*`, `pe-*`). Vazirmatn variable از `@fontsource-variable/vazirmatn` self-host.
+
+### build اولین بار
+
+```sh
+npm install
+npm run build:css            # تولید static/css/dist/output.css
+```
+
+برای dev همزمان با runserver:
+
+```sh
+npm run watch:css            # ترمینال ۱
+python manage.py runserver   # ترمینال ۲
+```
+
+### صفحه‌ها
+
+- `/` — صفحه اصلی (نمونه hero + دسته‌بندی + محصولات نمونه)
+- `/_styleguide/` — مرجع بصری tokens و primitiveها (QA داخلی)
+- `/healthz/` — health check (JSON)
+
+### فیلترهای template
+
+از `apps.core.templatetags.komaj_extras` (بارگذاری با `{% load komaj_extras %}`):
+
+- `{{ "1234"|fa }}` → `۱۲۳۴` — تبدیل ارقام به فارسی
+- `{{ 1800000|toman }}` → `۱٬۸۰۰٬۰۰۰` — قیمت با جداکننده فارسی
+- `{{ "0.5"|kg }}` → `۰٫۵` — مقدار کیلوگرم اعشاری
+
+### primitive components
+
+هر کدام در `templates/components/` با `{% include %}` قابل استفاده:
+
+- `button.html`  — variant: primary/secondary/ghost/danger، size: sm/md/lg
+- `field.html`   — text/tel/email/number/password با label/helper/error
+- `select.html`  — با placeholder و options
+- `badge.html`   — tone: sand/pistachio/saffron/pomegranate
+- `alert.html`   — success/warning/error/info
+- `product_card.html` — کارت محصول با weight badge و قیمت
+- `breadcrumb.html`
 
 ## اجرای محلی
 

@@ -1,0 +1,36 @@
+{% comment %}
+Text input field with label / helper / error.
+Params:
+  name (str) *           — name attr
+  label (str)            — متن لیبل
+  type (str)             — text | tel | email | number | password (پیش‌فرض text)
+  value (str)            — مقدار اولیه
+  placeholder (str)
+  helper (str)           — متن راهنما
+  error (str)            — پیام خطا (اگر پر باشد استایل خطا اعمال می‌شود)
+  required (bool)
+  autocomplete (str)
+  inputmode (str)        — برای stepper اعشار: decimal
+  extra_class (str)
+{% endcomment %}
+{% with t=type|default:"text" input_id=name %}
+<div class="w-full">
+    {% if label %}<label for="{{ input_id }}" class="label">{{ label }}{% if required %} <span class="text-pomegranate">*</span>{% endif %}</label>{% endif %}
+    <input
+        id="{{ input_id }}"
+        type="{{ t }}"
+        name="{{ name }}"
+        {% if value is not None %}value="{{ value }}"{% endif %}
+        {% if placeholder %}placeholder="{{ placeholder }}"{% endif %}
+        {% if autocomplete %}autocomplete="{{ autocomplete }}"{% endif %}
+        {% if inputmode %}inputmode="{{ inputmode }}"{% endif %}
+        {% if required %}required aria-required="true"{% endif %}
+        {% if error %}aria-invalid="true" aria-describedby="{{ input_id }}-error"{% elif helper %}aria-describedby="{{ input_id }}-help"{% endif %}
+        class="field{% if error %} field-error{% endif %} {{ extra_class }}">
+    {% if error %}
+        <p id="{{ input_id }}-error" class="error-text">{{ error }}</p>
+    {% elif helper %}
+        <p id="{{ input_id }}-help" class="helper">{{ helper }}</p>
+    {% endif %}
+</div>
+{% endwith %}

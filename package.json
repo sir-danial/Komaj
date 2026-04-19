@@ -1,0 +1,16 @@
+{
+  "name": "komaj-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Frontend build pipeline for Komaj (Tailwind + Vazirmatn)",
+  "scripts": {
+    "build:css": "tailwindcss -i ./static/css/src/input.css -o ./static/css/dist/output.css --minify",
+    "watch:css": "tailwindcss -i ./static/css/src/input.css -o ./static/css/dist/output.css --watch"
+  },
+  "devDependencies": {
+    "@fontsource-variable/vazirmatn": "^5.1.0",
+    "@fontsource/lalezar": "^5.1.0",
+    "@tailwindcss/forms": "^0.5.9",
+    "tailwindcss": "^3.4.14"
+  }
+}

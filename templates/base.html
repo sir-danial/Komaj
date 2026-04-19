@@ -1,0 +1,26 @@
+{% load static komaj_extras %}<!doctype html>
+<html dir="rtl" lang="fa-IR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#FAF6EE">
+    <title>{% block title %}کماج — شیرینی سنتی و قوطی‌های اصیل ایرانی{% endblock %}</title>
+    <meta name="description" content="{% block description %}فروشگاه آنلاین کماج — شیرینی کیلویی دست‌ساز و قوطی‌های مکمل سنتی ایرانی، ارسال به سراسر ایران.{% endblock %}">
+    <link rel="icon" href="{% static 'img/favicon.svg' %}" type="image/svg+xml">
+    <link rel="stylesheet" href="{% static 'css/dist/output.css' %}">
+    {% block head_extra %}{% endblock %}
+</head>
+<body class="bg-cream text-espresso antialiased">
+    <a href="#main" class="skip-link">پرش به محتوای اصلی</a>
+
+    {% include "partials/header.html" %}
+
+    <main id="main" class="container-page">
+        {% block content %}{% endblock %}
+    </main>
+
+    {% include "partials/footer.html" %}
+
+    {% block body_extra %}{% endblock %}
+</body>
+</html>

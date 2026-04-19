@@ -1,0 +1,8 @@
+{% comment %}
+Badge.
+Params:
+  label (str) *
+  tone (str) — sand (default) | pistachio | saffron | pomegranate
+  extra_class (str)
+{% endcomment %}
+<span class="badge badge-{{ tone|default:'sand' }} {{ extra_class }}">{{ label }}</span>

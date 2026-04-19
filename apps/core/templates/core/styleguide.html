@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% load komaj_extras %}
+
+{% block title %}Styleguide — کماج{% endblock %}
+
+{% block content %}
+<div class="section space-y-16">
+    <header class="border-b border-sand pb-6">
+        <p class="badge badge-saffron mb-3">داخلی</p>
+        <h1 class="text-h1">Styleguide — کماج</h1>
+        <p class="text-body text-espresso/70 mt-2">مرجع بصری tokens و primitiveها — برای QA داخلی و هم‌راستایی تیم.</p>
+    </header>
+
+    <section id="colors" class="space-y-4">
+        <h2 class="text-h2">۱. پالت رنگ</h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {% for swatch in swatches %}
+            <div class="rounded-lg border border-sand overflow-hidden">
+                <div class="h-20" style="background:{{ swatch.hex }}"></div>
+                <div class="p-3 text-body-sm">
+                    <div class="font-semibold">{{ swatch.name }}</div>
+                    <div class="tabular text-espresso/60" dir="ltr">{{ swatch.hex }}</div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section id="typography" class="space-y-4">
+        <h2 class="text-h2">۲. Typography</h2>
+        <div class="space-y-3">
+            <p class="text-display font-display">عنوان display — کماج</p>
+            <p class="text-h1">عنوان h1 — شیرینی کیلویی</p>
+            <p class="text-h2">عنوان h2 — دسته‌بندی‌ها</p>
+            <p class="text-h3">عنوان h3 — کارت محصول</p>
+            <p class="text-body-lg">متن body-lg — توضیح پررنگ‌تر زیر hero.</p>
+            <p class="text-body">متن body — پاراگراف پیش‌فرض. کماج فروشگاه محصولات محلی ایرانی است.</p>
+            <p class="text-body-sm text-espresso/70">متن body-sm — caption و helper.</p>
+            <p class="text-tiny text-espresso/60">متن tiny — badge و tag.</p>
+            <p class="price text-body-lg">قیمت نمونه: {{ 1800000|toman }} تومان</p>
+        </div>
+    </section>
+
+    <section id="buttons" class="space-y-4">
+        <h2 class="text-h2">۳. دکمه‌ها</h2>
+        <div class="flex flex-wrap gap-3 items-center">
+            {% include "components/button.html" with label="خرید کنید" variant="primary" %}
+            {% include "components/button.html" with label="ادامه" variant="secondary" %}
+            {% include "components/button.html" with label="لغو" variant="ghost" %}
+            {% include "components/button.html" with label="حذف" variant="danger" %}
+        </div>
+        <div class="flex flex-wrap gap-3 items-center">
+            {% include "components/button.html" with label="کوچک" variant="primary" size="sm" %}
+            {% include "components/button.html" with label="متوسط" variant="primary" %}
+            {% include "components/button.html" with label="بزرگ" variant="primary" size="lg" %}
+            {% include "components/button.html" with label="غیرفعال" variant="primary" disabled=True %}
+        </div>
+    </section>
+
+    <section id="inputs" class="space-y-4">
+        <h2 class="text-h2">۴. فیلدهای فرم</h2>
+        <div class="grid md:grid-cols-2 gap-4 max-w-3xl">
+            {% include "components/field.html" with name="full_name" label="نام و نام خانوادگی" placeholder="علی محمدی" required=True %}
+            {% include "components/field.html" with name="phone" label="شماره موبایل" type="tel" placeholder="۰۹۱۲۱۲۳۴۵۶۷" autocomplete="tel" required=True %}
+            {% include "components/field.html" with name="postal" label="کد پستی" inputmode="numeric" helper="۱۰ رقم، بدون خط تیره" %}
+            {% include "components/field.html" with name="email" label="ایمیل" type="email" error="ایمیل نامعتبر است" %}
+            {% include "components/select.html" with name="province" label="استان" placeholder="انتخاب استان" options=provinces required=True %}
+        </div>
+    </section>
+
+    <section id="badges" class="space-y-4">
+        <h2 class="text-h2">۵. Badge</h2>
+        <div class="flex flex-wrap gap-3">
+            {% include "components/badge.html" with label="۰.۵kg+" tone="sand" %}
+            {% include "components/badge.html" with label="🌿 تازه پخت" tone="pistachio" %}
+            {% include "components/badge.html" with label="ویژه" tone="saffron" %}
+            {% include "components/badge.html" with label="۲۰٪ تخفیف" tone="pomegranate" %}
+        </div>
+    </section>
+
+    <section id="alerts" class="space-y-3">
+        <h2 class="text-h2">۶. Alert</h2>
+        {% include "components/alert.html" with tone="success" title="پرداخت موفق" message="سفارش شما با کد ۱۰۰۲۳ ثبت شد." %}
+        {% include "components/alert.html" with tone="warning" message="موجودی این محصول محدود است." %}
+        {% include "components/alert.html" with tone="error" title="خطا" message="کد تخفیف وارد‌شده نامعتبر است." %}
+        {% include "components/alert.html" with tone="info" message="ارسال به شهرستان‌ها ۲ تا ۴ روز کاری است." %}
+    </section>
+
+    <section id="product-card" class="space-y-4">
+        <h2 class="text-h2">۷. Product Card</h2>
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {% for p in sample_products %}
+                {% include "components/product_card.html" with product=p %}
+            {% endfor %}
+        </div>
+    </section>
+
+    <section id="breadcrumb" class="space-y-4">
+        <h2 class="text-h2">۸. Breadcrumb</h2>
+        {% include "components/breadcrumb.html" with items=sample_breadcrumb %}
+    </section>
+
+    <section id="digits" class="space-y-3">
+        <h2 class="text-h2">۹. فیلترهای فارسی</h2>
+        <ul class="space-y-1 text-body">
+            <li>fa: 1234567890 → <span class="tabular">{{ "1234567890"|fa }}</span></li>
+            <li>toman: 1800000 → <span class="tabular">{{ 1800000|toman }} تومان</span></li>
+            <li>kg: 1.5 → <span class="tabular">{{ "1.5"|kg }} کیلوگرم</span></li>
+            <li>kg: 0.5 → <span class="tabular">{{ "0.5"|kg }} کیلوگرم</span></li>
+            <li>kg: 2 → <span class="tabular">{{ "2"|kg }} کیلوگرم</span></li>
+        </ul>
+    </section>
+</div>
+{% endblock %}

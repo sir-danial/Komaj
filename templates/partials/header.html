@@ -1,0 +1,54 @@
+{% load komaj_extras %}
+<header class="border-b border-sand bg-cream/90 backdrop-blur sticky top-0 z-40">
+    <div class="container-page">
+        <div class="hidden md:flex items-center justify-between py-2 text-body-sm text-espresso/70 border-b border-sand/60">
+            <div class="flex items-center gap-4">
+                <a href="/" class="hover:text-espresso">ورود / ثبت‌نام</a>
+                <span class="text-espresso/30">·</span>
+                <a href="/" class="hover:text-espresso">حساب من</a>
+            </div>
+            <div class="flex items-center gap-4">
+                <span>ارسال به سراسر ایران</span>
+                <span class="text-espresso/30">·</span>
+                <a href="tel:+982100000000" class="hover:text-espresso tabular" dir="ltr">۰۲۱-۰۰۰۰۰۰۰۰</a>
+            </div>
+        </div>
+
+        <div class="flex items-center justify-between gap-4 py-4">
+            <a href="/" class="flex items-center gap-2 shrink-0" aria-label="کماج — صفحه اصلی">
+                <span class="font-display text-h1 leading-none text-saffron">کماج</span>
+            </a>
+
+            <form action="/search/" method="get" role="search" class="flex-1 max-w-xl hidden md:block">
+                <label for="site-search" class="sr-only">جستجو در محصولات</label>
+                <div class="relative">
+                    <input id="site-search" type="search" name="q" class="field ps-11" placeholder="جستجو در محصولات…" autocomplete="off">
+                    <span class="absolute inset-y-0 start-0 flex items-center ps-3 text-espresso/50" aria-hidden="true">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-5 w-5"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+                    </span>
+                </div>
+            </form>
+
+            <div class="flex items-center gap-2 md:gap-3">
+                <button type="button" class="md:hidden p-2 rounded-md hover:bg-sand" aria-label="جستجو">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-6 w-6"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+                </button>
+                <a href="/cart/" class="relative p-2 rounded-md hover:bg-sand" aria-label="سبد خرید">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-6 w-6"><path d="M3 5h2l2.5 11a2 2 0 0 0 2 1.5H18a2 2 0 0 0 2-1.5L21.5 8H6"/><circle cx="10" cy="20" r="1.5"/><circle cx="17" cy="20" r="1.5"/></svg>
+                    <span class="absolute -top-0.5 -start-0.5 badge badge-saffron tabular min-w-[20px] h-5 justify-center px-1">{{ cart_count|default:0|fa }}</span>
+                </a>
+                <button type="button" class="md:hidden p-2 rounded-md hover:bg-sand" aria-label="منو" aria-expanded="false">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-6 w-6"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+                </button>
+            </div>
+        </div>
+
+        <nav class="hidden md:flex items-center gap-6 py-3 text-body-sm" aria-label="دسته‌بندی اصلی">
+            <a href="/" class="hover:text-saffron">صفحه اصلی</a>
+            <a href="/c/sweets/" class="hover:text-saffron">شیرینی کیلویی</a>
+            <a href="/c/jars/" class="hover:text-saffron">قوطی‌ها</a>
+            <a href="/about/" class="hover:text-saffron">درباره ما</a>
+            <a href="/contact/" class="hover:text-saffron">تماس</a>
+        </nav>
+    </div>
+</header>

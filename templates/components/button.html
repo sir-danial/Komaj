@@ -1,0 +1,26 @@
+{% comment %}
+Button primitive.
+Params:
+  label (str)            — متن دکمه (پیش‌فرض خالی؛ در این حالت از slot استفاده کن)
+  variant (str)          — primary | secondary | ghost | danger  (پیش‌فرض: primary)
+  size (str)             — sm | md | lg                          (پیش‌فرض: md)
+  type (str)             — button | submit | reset               (پیش‌فرض: button)
+  href (str, optional)   — اگر پر شود، به‌جای <button> یک <a> می‌سازیم
+  icon_before (html)     — آیکون قبل از متن (optional)
+  disabled (bool)        — optional
+  extra_class (str)      — کلاس اضافه
+  attrs (str)            — attributes اضافه مثل 'hx-post="/cart/" hx-swap="outerHTML"'
+{% endcomment %}
+{% with v=variant|default:"primary" s=size|default:"md" t=type|default:"button" %}
+{% if href %}
+<a href="{{ href }}" class="btn btn-{{ v }}{% if s != 'md' %} btn-{{ s }}{% endif %} {{ extra_class }}" {{ attrs|safe }}>
+    {% if icon_before %}{{ icon_before|safe }}{% endif %}
+    <span>{{ label }}</span>
+</a>
+{% else %}
+<button type="{{ t }}" class="btn btn-{{ v }}{% if s != 'md' %} btn-{{ s }}{% endif %} {{ extra_class }}"{% if disabled %} disabled{% endif %} {{ attrs|safe }}>
+    {% if icon_before %}{{ icon_before|safe }}{% endif %}
+    <span>{{ label }}</span>
+</button>
+{% endif %}
+{% endwith %}
