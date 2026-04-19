@@ -1,6 +1,6 @@
 # گزارش جامع طراحی فروشگاه آنلاین محصولات بومی (Komaj)
 
-> تاریخ: 2026-04-19
+> تاریخ: 2026-04-19 (آخرین به‌روزرسانی: Week 1 انجام شد + Foundation فرانت جلوتر از پلن)
 > دامنه: طراحی استک فنی برای فروشگاه آنلاین Django، ایران‌محور، با برنامه توسعه بین‌المللی در فاز ۲.
 > **تصمیم فاز ۱ (کمینه‌هزینه):** با انتظار ~۱۰ سفارش/هفته برای ۲-۳ ماه اول، استک روی SQLite + کش دیتابیس + تسک‌های sync چیده شده تا فقط هزینه میزبانی پرداخت شود. ↓ بخش «فاز ۱ Lean» را ببینید.
 
@@ -384,10 +384,12 @@ AWS_DEFAULT_ACL = "public-read"
 
 ### استک فرانت پیشنهادی
 
-- **Django Templates + Tailwind CSS** با `tailwindcss-rtl`
+- **Django Templates + Tailwind CSS** با **logical properties** (`ms-*`, `pe-*`) — پلاگین `tailwindcss-rtl` انتخاب نشد چون Tailwind 3.4+ خودش logical properties دارد و وابستگی اضافی لازم نیست.
 - **HTMX** برای سبد خرید تعاملی بدون SPA کامل
-- **Alpine.js** برای رفتار کوچک سمت کلاینت
+- **Alpine.js** برای رفتار کوچک سمت کلاینت (اختیاری)
+- **Vazirmatn + Lalezar** self-host از طریق `@fontsource-variable/vazirmatn` و `@fontsource/lalezar`
 - **Schema.org + Product JSON-LD** در هر صفحه محصول
+- **Design system**: جزئیات کامل در [docs/design-system.md](./design-system.md). زنده در `/_styleguide/`.
 - **sitemap.xml و robots.txt** با `django.contrib.sitemaps`
 - **slug فارسی** با `django-autoslug` + unidecode (اختیاری)
 
@@ -519,16 +521,20 @@ django-redis==5.4.*
 
 ## ۱۱. نقشه راه MVP — ۸ هفته
 
-| هفته | کار |
-|------|-----|
-| ۱ | اسکلت Django + Dockerfile + اولین deploy روی Hamravesh + CI. **موازی: شروع اینماد** |
-| ۲ | مدل‌ها (Decimal quantity)، admin با django-unfold، اتصال ArvanCloud Storage |
-| ۳ | کاتالوگ، SEO (sitemap, JSON-LD)، جستجو ساده (Postgres trigram) |
-| ۴ | سبد خرید با ولیدیشن min_qty و step، تخمین هزینه پست، VAT ۹٪ |
-| ۵ | ثبت‌نام/ورود با OTP موبایل (Kavenegar) + django-phone-verify |
-| ۶ | پرداخت Zarinpal (sandbox → prod)، گرفتن merchant_id پس از اینماد |
-| ۷ | محاسبه دقیق پست پیشتاز، SMS اعلان، فاکتور PDF (WeasyPrint) |
-| ۸ | Sentry، تست E2E، امنیت (CSRF، rate-limit OTP)، بک‌آپ، soft launch |
+| هفته | کار | وضعیت |
+|------|-----|-------|
+| ۱ | اسکلت Django + Dockerfile + اولین deploy روی Hamravesh + CI. **موازی: شروع اینماد** | ✅ انجام شد (2026-04-19) — به‌علاوه Foundation فرانت (Phase A/B/C design-system §۸) جلوتر از پلن پیاده شد. |
+| ۲ (فعلی) | مدل‌ها (Decimal quantity)، admin با django-unfold، اتصال ArvanCloud Storage | 🟡 در جریان |
+| ۳ | کاتالوگ، SEO (sitemap, JSON-LD)، جستجو ساده (Postgres trigram) | ⏳ |
+| ۴ | سبد خرید با ولیدیشن min_qty و step، تخمین هزینه پست، VAT ۹٪ | ⏳ |
+| ۵ | ثبت‌نام/ورود با OTP موبایل (Kavenegar) + django-phone-verify — **ثبت‌نام اختیاری (checkout مهمان فعال)** | ⏳ |
+| ۶ | پرداخت Zarinpal (sandbox → prod)، گرفتن merchant_id پس از اینماد | ⏳ |
+| ۷ | محاسبه دقیق پست پیشتاز، SMS اعلان، فاکتور PDF (WeasyPrint) | ⏳ |
+| ۸ | Sentry، تست E2E، امنیت (CSRF، rate-limit OTP)، بک‌آپ، soft launch، gate برای `/_styleguide/` | ⏳ |
+
+### افزوده‌های scope (تأیید شده 2026-04-19)
+- **checkout مهمان**: `Order.user` nullable + `guest_phone`/`guest_email`. اپ مستقل برای کد تخفیف (`apps/coupons`) با `Coupon` + `CouponRedemption`.
+- **بدون wishlist** در MVP.
 
 ---
 
@@ -592,4 +598,5 @@ django-redis==5.4.*
 - [django-unfold](https://unfoldadmin.com/)
 - [mraliarman/persian-djnago-admin](https://github.com/mraliarman/persian-djnago-admin)
 - [HTMX](https://htmx.org/)
-- [tailwindcss-rtl](https://github.com/20lives/tailwindcss-rtl)
+- [Tailwind CSS Logical Properties](https://tailwindcss.com/docs/padding#using-logical-properties)
+- [@fontsource-variable/vazirmatn](https://www.npmjs.com/package/@fontsource-variable/vazirmatn)

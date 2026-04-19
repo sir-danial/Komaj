@@ -3,6 +3,8 @@
 > wireframe متنی صفحات کلیدی. mobile-first با نت desktop.
 > جهت: **RTL** — لوگو و navigation راست، actionها چپ، خواندن از راست به چپ.
 > تاریخ: ۲۰۲۶-۰۴-۱۹
+>
+> **وضعیت پیاده‌سازی:** §۱ (Header) + §۲ (Home — hero/categories/featured) + §۱۰ (primitiveها در `/_styleguide/`) به‌صورت static پیاده شد. بقیه صفحات منتظر مدل‌های backend.
 
 ---
 

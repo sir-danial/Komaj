@@ -1,7 +1,7 @@
 # سیستم طراحی کماج (Komaj Design System)
 
 > سند مرجع UI/UX برای فروشگاه کماج — پالت، تایپ، الگوها، و پلن توسعه فرانت.
-> آخرین به‌روزرسانی: ۲۰۲۶-۰۴-۱۹
+> آخرین به‌روزرسانی: ۲۰۲۶-۰۴-۱۹ (Foundation — Phase A/B/C پیاده شد، styleguide زنده: `/_styleguide/`)
 >
 > **wireframe صفحات کلیدی**: [docs/wireframes.md](./wireframes.md)
 
@@ -225,21 +225,21 @@ module.exports = {
 
 ## ۸. پلن توسعه فرانت — ۲۸ روز موازی با backend
 
-| فاز | مدت | خروجی | وابستگی |
-|-----|-----|--------|---------|
-| **A. Design tokens** | ۲ روز | `tailwind.config.js` با این tokens. self-host Vazirmatn. RTL فعال. logical properties. | شروع هر لحظه |
-| **B. Typography + layout base** | ۱ روز | `base.html` + header skeleton + فیلتر ارقام فارسی | فاز A |
-| **C. Primitive components** | ۴ روز | Button (۳ variant)، Input، Select، Badge، Card، Modal، Toast، Breadcrumb. Django template includes. | فاز A |
-| **D. Header + Footer + Nav** | ۲ روز | سرچ، سبد (HTMX counter)، منو موبایل drawer، footer با لوگو اینماد/ساماندهی | فاز C |
-| **E. Home + catalog** | ۵ روز | Hero، featured، لیست محصولات با فیلتر/pagination، صفحه جزئیات با گالری | نیاز به مدل‌های KOM-10 |
-| **F. Cart + Checkout** | ۵ روز | سبد با HTMX، checkout چندمرحله‌ای، selector شهر، خلاصه | KOM-18, KOM-27 |
-| **G. Auth (OTP UI)** | ۲ روز | فرم دومرحله‌ای با countdown، انیمیشن نرم | KOM-22, KOM-23 |
-| **H. Account pages** | ۳ روز | داشبورد، سفارش‌های من، آدرس‌ها، دانلود فاکتور | KOM-33 |
-| **I. Polish + a11y** | ۴ روز | focus، aria، Lighthouse > 90، WCAG AA، RTL regression | انتهای همه |
+| فاز | مدت | خروجی | وابستگی | وضعیت |
+|-----|-----|--------|---------|-------|
+| **A. Design tokens** | ۲ روز | `tailwind.config.js` با این tokens. self-host Vazirmatn. RTL فعال. logical properties. | شروع هر لحظه | ✅ انجام شد (2026-04-19) |
+| **B. Typography + layout base** | ۱ روز | `base.html` + header skeleton + فیلتر ارقام فارسی | فاز A | ✅ انجام شد (2026-04-19) |
+| **C. Primitive components** | ۴ روز | Button (۴ variant)، Field، Select، Badge، Alert، Product Card، Breadcrumb. Django template includes + `/_styleguide/`. | فاز A | ✅ انجام شد (2026-04-19) |
+| **D. Header + Footer + Nav** | ۲ روز | سرچ، سبد (HTMX counter)، منو موبایل drawer، footer با لوگو اینماد/ساماندهی | فاز C | 🟡 جزئی (header/footer static + counter آماده — HTMX و drawer باقی) |
+| **E. Home + catalog** | ۵ روز | Hero، featured، لیست محصولات با فیلتر/pagination، صفحه جزئیات با گالری | نیاز به مدل‌های KOM-10 | ⏳ منتظر مدل‌های catalog |
+| **F. Cart + Checkout** | ۵ روز | سبد با HTMX، checkout چندمرحله‌ای، selector شهر، خلاصه | KOM-18, KOM-27 | ⏳ |
+| **G. Auth (OTP UI)** | ۲ روز | فرم دومرحله‌ای با countdown، انیمیشن نرم | KOM-22, KOM-23 | ⏳ |
+| **H. Account pages** | ۳ روز | داشبورد، سفارش‌های من، آدرس‌ها، دانلود فاکتور | KOM-33 | ⏳ |
+| **I. Polish + a11y** | ۴ روز | focus، aria، Lighthouse > 90، WCAG AA، RTL regression | انتهای همه | ⏳ |
 
 ### ترتیب واقعی (ترکیب با پلن backend)
-- **Week 2-3 (فعلی)**: A → B → C (tokens، base، primitives) — موازی با ساخت مدل‌های catalog
-- **Week 3**: D + E (header + home + catalog) همراه با صفحات کاتالوگ backend
+- **Week 2 (✅ انجام شد)**: A → B → C (tokens، base، primitives، styleguide)
+- **Week 3 (فعلی)**: مدل‌های catalog backend + D تکمیلی (HTMX counter سبد، drawer موبایل) + شروع E
 - **Week 4-5**: F + G (cart + OTP UI)
 - **Week 7**: H (account) همراه با سفارش‌های من
 - **Week 8**: I (polish) همراه با امنیت/لانچ
@@ -254,8 +254,8 @@ module.exports = {
 | HTMX | تعامل بدون SPA — سبد، OTP، فیلتر، add-to-cart |
 | Alpine.js | state کوچک client — drawer، dropdown (اختیاری) |
 | heroicons یا phosphor | آیکون‌ست |
-| Vazirmatn (self-host) | فونت اصلی |
-| django-tailwind یا build standalone | pipeline |
+| Vazirmatn + Lalezar (self-host via `@fontsource-variable/vazirmatn` + `@fontsource/lalezar`) | فونت‌ها |
+| **Tailwind standalone (npm)** | pipeline — `npm run build:css` / `watch:css`. django-tailwind انتخاب نشد (وابستگی اضافی، نیاز به runtime Node در کانتینر). |
 
 **Storybook نصب نمی‌شود** — یک صفحه `/_styleguide/` در Django برای QA داخلی کافی است.
 
