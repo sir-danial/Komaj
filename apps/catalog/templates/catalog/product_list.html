@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load komaj_extras %}
+
+{% block title %}{% if category %}{{ category.name }}{% else %}همه محصولات{% endif %} — کماج{% endblock %}
+{% block description %}{% if category and category.description %}{{ category.description }}{% else %}فهرست محصولات کماج — شیرینی کیلویی دست‌ساز و قوطی‌های مکمل سنتی.{% endif %}{% endblock %}
+
+{% block content %}
+{% include "components/breadcrumb.html" with items=breadcrumb %}
+
+<section class="section">
+    <div class="flex flex-col gap-2 mb-6">
+        <h1 class="text-h1">{% if category %}{{ category.name }}{% else %}همه محصولات{% endif %}</h1>
+        {% if category.description %}
+            <p class="text-body text-espresso/70 max-w-2xl">{{ category.description }}</p>
+        {% endif %}
+    </div>
+
+    <nav class="flex flex-wrap gap-2 mb-8" aria-label="دسته‌بندی‌ها">
+        <a href="/products/" class="badge {% if not category %}badge-saffron{% else %}badge-sand{% endif %}">همه</a>
+        {% for c in categories %}
+            <a href="{{ c.get_absolute_url }}" class="badge {% if category and category.pk == c.pk %}badge-saffron{% else %}badge-sand{% endif %}">{{ c.name }}</a>
+        {% endfor %}
+    </nav>
+
+    {% if cards %}
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {% for p in cards %}
+                {% include "components/product_card.html" with product=p %}
+            {% endfor %}
+        </div>
+    {% else %}
+        {% include "components/alert.html" with tone="info" message="محصولی در این بخش موجود نیست." %}
+    {% endif %}
+</section>
+{% endblock %}
