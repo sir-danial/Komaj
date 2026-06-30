@@ -76,7 +76,7 @@
 
             {# --- Summary + pay --- #}
             <aside class="card bg-sand/40 lg:sticky lg:top-28 space-y-4" id="summary"
-                   data-subtotal="{{ totals.subtotal }}" data-vat="{{ totals.vat }}">
+                   data-subtotal="{{ totals.subtotal }}" data-vat="{{ totals.vat }}" data-discount="{{ totals.discount }}">
                 <h2 class="text-h3">خلاصه سفارش <span class="text-body-sm text-espresso/50">({{ cart.count|fa }} کالا)</span></h2>
                 <ul class="space-y-1.5 text-body-sm">
                     {% for item in items %}
@@ -88,6 +88,9 @@
                 </ul>
                 <dl class="space-y-2 text-body border-t border-espresso/15 pt-3">
                     <div class="flex justify-between"><dt class="text-espresso/70">جمع اقلام</dt><dd class="tabular">{{ totals.subtotal|toman }}</dd></div>
+                    {% if totals.discount %}
+                    <div class="flex justify-between text-pistachio-dark"><dt>تخفیف{% if coupon %} ({{ coupon.code }}){% endif %}</dt><dd class="tabular">−{{ totals.discount|toman }}</dd></div>
+                    {% endif %}
                     <div class="flex justify-between"><dt class="text-espresso/70">مالیات ۹٪</dt><dd class="tabular">{{ totals.vat|toman }}</dd></div>
                     <div class="flex justify-between"><dt class="text-espresso/70">هزینه ارسال</dt><dd class="tabular" id="sum-shipping">{{ totals.shipping|toman }}</dd></div>
                 </dl>
@@ -121,13 +124,14 @@
   if (!summary) return;
   const subtotal = parseFloat(summary.dataset.subtotal) || 0;
   const vat = parseFloat(summary.dataset.vat) || 0;
+  const discount = parseFloat(summary.dataset.discount) || 0;
   const faGroup = (n) => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, '٬')
       .replace(/[0-9]/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]);
   function update() {
     const sel = document.querySelector('.js-ship:checked');
     const ship = sel ? (parseFloat(sel.dataset.cost) || 0) : 0;
     document.getElementById('sum-shipping').textContent = faGroup(ship);
-    const total = faGroup(subtotal + vat + ship);
+    const total = faGroup(subtotal - discount + vat + ship);
     document.getElementById('sum-total').textContent = total;
     document.getElementById('pay-amount').textContent = total;
   }

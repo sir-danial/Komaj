@@ -67,9 +67,27 @@
             <h2 class="text-h3">خلاصه سفارش</h2>
             <dl class="space-y-2 text-body">
                 <div class="flex justify-between"><dt class="text-espresso/70">جمع اقلام</dt><dd class="tabular">{{ totals.subtotal|toman }}</dd></div>
+                {% if totals.discount %}
+                <div class="flex justify-between text-pistachio-dark"><dt>تخفیف{% if coupon %} ({{ coupon.code }}){% endif %}</dt><dd class="tabular">−{{ totals.discount|toman }}</dd></div>
+                {% endif %}
                 <div class="flex justify-between"><dt class="text-espresso/70">مالیات ۹٪</dt><dd class="tabular">{{ totals.vat|toman }}</dd></div>
                 <div class="flex justify-between"><dt class="text-espresso/70">هزینه ارسال (تخمینی)</dt><dd class="tabular">{{ totals.shipping|toman }}</dd></div>
             </dl>
+
+            {# --- Coupon --- #}
+            {% if coupon %}
+            <form method="post" action="{% url 'coupons:remove' %}" class="flex items-center justify-between gap-2 rounded-md bg-pistachio/10 px-3 py-2 text-body-sm">
+                {% csrf_token %}
+                <span class="text-pistachio-dark">کد «{{ coupon.code }}» اعمال شد</span>
+                <button type="submit" class="text-pomegranate hover:text-pomegranate-dark">حذف</button>
+            </form>
+            {% else %}
+            <form method="post" action="{% url 'coupons:apply' %}" class="flex items-stretch gap-2">
+                {% csrf_token %}
+                <input type="text" name="code" class="field btn-sm flex-1" placeholder="کد تخفیف" autocomplete="off">
+                <button type="submit" class="btn btn-secondary btn-sm shrink-0">اعمال</button>
+            </form>
+            {% endif %}
             <div class="border-t border-espresso/15 pt-3 flex justify-between items-baseline">
                 <span class="text-h3">مجموع کل</span>
                 <span class="price text-h2 tabular">{{ totals.total|toman }} <span class="text-body-sm font-normal text-espresso/60">تومان</span></span>

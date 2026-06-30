@@ -11,11 +11,15 @@ from .cart import Cart
 
 
 def cart_detail(request):
+    from apps.coupons.services import session_discount
+
     cart = Cart(request)
+    coupon, discount = session_discount(request, cart.subtotal)
     return render(request, "cart/detail.html", {
         "cart": cart,
         "items": list(cart),
-        "totals": cart.totals(),
+        "totals": cart.totals(discount=discount),
+        "coupon": coupon,
     })
 
 

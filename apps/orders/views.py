@@ -31,21 +31,32 @@ def checkout(request):
     if request.method == "POST":
         form = CheckoutForm(request.POST, shipping_choices=choices)
         if form.is_valid():
+            from apps.coupons.services import clear_session, record_redemption, session_discount
+
+            coupon, discount = session_discount(request, cart.subtotal)
             try:
-                order = create_order_from_cart(cart, form.cleaned_data, user=request.user)
+                order = create_order_from_cart(
+                    cart, form.cleaned_data, user=request.user, discount=discount,
+                )
             except ValidationError as exc:
                 messages.error(request, exc.messages[0])
                 return redirect("cart:detail")
+            if coupon and order.discount:
+                record_redemption(coupon, order)
+                clear_session(request)
             # hand off to the payment gateway (payments app owns this route)
             return redirect(f"/payment/start/{order.token}/")
     else:
         form = CheckoutForm(shipping_choices=choices, initial=initial)
 
+    from apps.coupons.services import session_discount
+    coupon, discount = session_discount(request, cart.subtotal)
     return render(request, "orders/checkout.html", {
         "form": form,
         "cart": cart,
         "items": list(cart),
-        "totals": cart.totals(),
+        "totals": cart.totals(discount=discount),
+        "coupon": coupon,
         "shipping_methods": settings.SHIPPING_METHODS,
     })
 
