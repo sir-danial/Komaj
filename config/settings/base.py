@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     "apps.orders",
     "apps.payments",
     "apps.coupons",
+    "apps.accounts",
 ]
 
 MIDDLEWARE = [
@@ -145,6 +146,14 @@ else:
     }
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+LOGIN_URL = "/login/"
+
+# --- OTP (cache-backed; rate limits guard against brute force) ---
+OTP_TTL = env.int("OTP_TTL", default=120)
+OTP_RESEND_COOLDOWN = env.int("OTP_RESEND_COOLDOWN", default=60)
+OTP_MAX_SENDS_PER_HOUR = env.int("OTP_MAX_SENDS_PER_HOUR", default=5)
+OTP_MAX_ATTEMPTS = env.int("OTP_MAX_ATTEMPTS", default=5)
 
 # --- Commerce pricing (all amounts in Toman) ---
 # VAT 9% per Iran tax rules (modular so it can change without touching call sites).

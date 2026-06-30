@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load komaj_extras %}
+
+{% block title %}ورود به کماج{% endblock %}
+
+{% block content %}
+<section class="section max-w-md mx-auto">
+    <div class="card space-y-5 py-8">
+        <div class="text-center space-y-1">
+            <div class="text-h1">🌿</div>
+            <h1 class="text-h2">خوش آمدید به کماج</h1>
+            <p class="text-body-sm text-espresso/70">شماره موبایل خود را وارد کنید تا کد تأیید برایتان ارسال شود.</p>
+        </div>
+
+        <form method="post" action="{% url 'accounts:login' %}" novalidate class="space-y-4">
+            {% csrf_token %}
+            <div>
+                <label class="label" for="{{ form.phone.id_for_label }}">شماره موبایل</label>
+                <input type="tel" name="phone" id="{{ form.phone.id_for_label }}" inputmode="tel" dir="ltr"
+                       class="field text-center tabular" placeholder="۰۹۱۲۳۴۵۶۷۸۹" value="{{ form.phone.value|default:'' }}" autofocus>
+                {% for e in form.phone.errors %}<p class="error-text">{{ e }}</p>{% endfor %}
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg w-full">ارسال کد تأیید</button>
+        </form>
+
+        <p class="text-tiny text-center text-espresso/50">با ورود، شرایط و قوانین کماج را می‌پذیرید.</p>
+        <p class="text-body-sm text-center text-espresso/70">
+            می‌توانید بدون ثبت‌نام هم خرید کنید — <a href="/cart/" class="text-saffron-dark hover:text-saffron">بازگشت به سبد</a>
+        </p>
+    </div>
+</section>
+{% endblock %}

@@ -3,9 +3,16 @@
     <div class="container-page">
         <div class="hidden md:flex items-center justify-between py-2 text-body-sm text-espresso/70 border-b border-sand/60">
             <div class="flex items-center gap-4">
-                <a href="/" class="hover:text-espresso">ورود / ثبت‌نام</a>
-                <span class="text-espresso/30">·</span>
-                <a href="/" class="hover:text-espresso">حساب من</a>
+                {% if user.is_authenticated %}
+                    <span class="tabular" dir="ltr">{{ user.username }}</span>
+                    <span class="text-espresso/30">·</span>
+                    <form method="post" action="{% url 'accounts:logout' %}" class="inline">
+                        {% csrf_token %}
+                        <button type="submit" class="hover:text-espresso">خروج</button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'accounts:login' %}" class="hover:text-espresso">ورود / ثبت‌نام</a>
+                {% endif %}
             </div>
             <div class="flex items-center gap-4">
                 <span>ارسال به سراسر ایران</span>
