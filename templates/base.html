@@ -16,6 +16,13 @@
     {% include "partials/header.html" %}
 
     <main id="main" class="container-page">
+        {% if messages %}
+        <div class="space-y-2 mt-4" role="region" aria-label="پیام‌ها">
+            {% for message in messages %}
+                {% include "components/alert.html" with tone=message.tags message=message %}
+            {% endfor %}
+        </div>
+        {% endif %}
         {% block content %}{% endblock %}
     </main>
 

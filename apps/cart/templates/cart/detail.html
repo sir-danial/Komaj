@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% load komaj_extras %}
+
+{% block title %}سبد خرید — کماج{% endblock %}
+
+{% block content %}
+<section class="section">
+    <h1 class="text-h1 mb-6">سبد خرید{% if cart.count %} <span class="text-body text-espresso/50">({{ cart.count|fa }} کالا)</span>{% endif %}</h1>
+
+    {% if cart.is_empty %}
+        <div class="card text-center py-16 flex flex-col items-center gap-4">
+            <div class="h-20 w-20 rounded-full bg-sand flex items-center justify-center text-h1">🛒</div>
+            <p class="text-h3">سبد خرید شما خالی است</p>
+            <p class="text-body text-espresso/60">هنوز محصولی اضافه نکرده‌اید.</p>
+            <a href="/products/" class="btn btn-primary btn-lg mt-2">شروع خرید</a>
+        </div>
+    {% else %}
+    <div class="grid gap-8 lg:grid-cols-3 items-start">
+        {# --- Items --- #}
+        <div class="lg:col-span-2 space-y-4">
+            {% for item in items %}
+            <div class="card flex gap-4">
+                <a href="{{ item.variant.product.get_absolute_url }}" class="shrink-0">
+                    <div class="h-24 w-24 rounded-lg bg-sand overflow-hidden flex items-center justify-center">
+                        {% if item.variant.product.primary_image %}
+                            <img src="{{ item.variant.product.primary_image.url }}" alt="{{ item.variant.product.name }}" class="h-full w-full object-cover">
+                        {% else %}<span class="text-espresso/30 text-h3">🍯</span>{% endif %}
+                    </div>
+                </a>
+
+                <div class="flex-1 min-w-0 flex flex-col gap-2">
+                    <div class="flex items-start justify-between gap-3">
+                        <div class="min-w-0">
+                            <a href="{{ item.variant.product.get_absolute_url }}" class="text-h3 hover:text-saffron line-clamp-1">{{ item.variant.product.name }}</a>
+                            {% if item.variant.label %}<p class="text-body-sm text-espresso/60">{{ item.variant.label }}</p>{% endif %}
+                            <p class="text-body-sm text-espresso/60 tabular">{{ item.unit_price|toman }} تومان / {{ item.variant.unit_label }}</p>
+                        </div>
+                        <form method="post" action="{% url 'cart:remove' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="variant_id" value="{{ item.variant.pk }}">
+                            <button type="submit" class="text-body-sm text-pomegranate hover:text-pomegranate-dark" aria-label="حذف">حذف</button>
+                        </form>
+                    </div>
+
+                    <div class="flex items-center justify-between gap-3 flex-wrap">
+                        <form method="post" action="{% url 'cart:update' %}" class="qty-stepper flex items-stretch gap-1.5">
+                            {% csrf_token %}
+                            <input type="hidden" name="variant_id" value="{{ item.variant.pk }}">
+                            <button type="button" class="btn btn-secondary btn-sm px-3 js-minus" aria-label="کاهش">−</button>
+                            <input type="number" name="quantity" class="field btn-sm text-center w-20 tabular js-qty"
+                                   value="{{ item.quantity|stringformat:'s' }}"
+                                   min="{{ item.variant.min_order_qty }}" step="{{ item.variant.qty_step }}" inputmode="decimal">
+                            <button type="button" class="btn btn-secondary btn-sm px-3 js-plus" aria-label="افزایش">+</button>
+                            <button type="submit" class="btn btn-ghost btn-sm js-update">به‌روزرسانی</button>
+                        </form>
+                        <span class="price text-body-lg tabular">{{ item.line_total|toman }} <span class="text-body-sm text-espresso/60 font-normal">تومان</span></span>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+            <a href="/products/" class="inline-flex items-center gap-1 text-body-sm text-saffron-dark hover:text-saffron mt-2">→ ادامه خرید</a>
+        </div>
+
+        {# --- Summary --- #}
+        <aside class="card bg-sand/40 lg:sticky lg:top-28 space-y-4">
+            <h2 class="text-h3">خلاصه سفارش</h2>
+            <dl class="space-y-2 text-body">
+                <div class="flex justify-between"><dt class="text-espresso/70">جمع اقلام</dt><dd class="tabular">{{ totals.subtotal|toman }}</dd></div>
+                <div class="flex justify-between"><dt class="text-espresso/70">مالیات ۹٪</dt><dd class="tabular">{{ totals.vat|toman }}</dd></div>
+                <div class="flex justify-between"><dt class="text-espresso/70">هزینه ارسال (تخمینی)</dt><dd class="tabular">{{ totals.shipping|toman }}</dd></div>
+            </dl>
+            <div class="border-t border-espresso/15 pt-3 flex justify-between items-baseline">
+                <span class="text-h3">مجموع کل</span>
+                <span class="price text-h2 tabular">{{ totals.total|toman }} <span class="text-body-sm font-normal text-espresso/60">تومان</span></span>
+            </div>
+            <p class="helper">هزینه دقیق ارسال در مرحله تسویه بر اساس استان محاسبه می‌شود.</p>
+            <a href="/checkout/" class="btn btn-primary btn-lg w-full">🔒 تسویه حساب</a>
+        </aside>
+    </div>
+    {% endif %}
+</section>
+{% endblock %}
+
+{% block body_extra %}
+<script>
+document.querySelectorAll('.qty-stepper').forEach(function (form) {
+  const input = form.querySelector('.js-qty');
+  const step = parseFloat(input.step) || 1;
+  const min = parseFloat(input.min) || step;
+  const fmt = (n) => parseFloat(n.toFixed(2)).toString();
+  form.querySelector('.js-plus').addEventListener('click', () => {
+    input.value = fmt((parseFloat(input.value) || 0) + step); form.submit();
+  });
+  form.querySelector('.js-minus').addEventListener('click', () => {
+    const next = (parseFloat(input.value) || 0) - step;
+    if (next >= min) { input.value = fmt(next); form.submit(); }
+  });
+});
+</script>
+{% endblock %}
