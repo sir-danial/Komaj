@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load komaj_extras %}
+
+{% block title %}سفارش {{ order.code|fa }} — کماج{% endblock %}
+
+{% block content %}
+<section class="section max-w-2xl mx-auto">
+    {% if order.is_paid %}
+    <div class="card text-center py-10 flex flex-col items-center gap-3">
+        <div class="h-20 w-20 rounded-full bg-pistachio/20 flex items-center justify-center text-h1 text-pistachio-dark">✓</div>
+        <h1 class="text-h1">پرداخت موفق بود</h1>
+        <p class="text-body text-espresso/70">سفارش شما ثبت شد و به‌زودی آماده‌سازی می‌شود.</p>
+    </div>
+    {% else %}
+    <div class="card text-center py-10 flex flex-col items-center gap-3">
+        <div class="h-20 w-20 rounded-full bg-saffron/20 flex items-center justify-center text-h1">🧾</div>
+        <h1 class="text-h1">سفارش ثبت شد</h1>
+        <p class="text-body text-espresso/70">این سفارش در انتظار پرداخت است.</p>
+        <a href="/payment/start/{{ order.token }}/" class="btn btn-primary btn-lg mt-2">🔒 پرداخت سفارش</a>
+    </div>
+    {% endif %}
+
+    <div class="card mt-6 space-y-4">
+        <div class="flex flex-wrap justify-between gap-2 border-b border-sand pb-3">
+            <div><span class="text-espresso/60 text-body-sm">شماره سفارش</span><div class="text-h3 tabular">{{ order.code|fa }}</div></div>
+            <div class="text-end"><span class="text-espresso/60 text-body-sm">وضعیت</span>
+                <div><span class="badge {% if order.is_paid %}badge-pistachio{% else %}badge-saffron{% endif %}">{{ order.get_status_display }}</span></div>
+            </div>
+        </div>
+
+        <ul class="divide-y divide-sand">
+            {% for item in order.items.all %}
+            <li class="flex justify-between gap-3 py-2">
+                <span class="text-body">{{ item.display_name }} <span class="text-espresso/50 text-body-sm">× {{ item.quantity|kg }} {{ item.unit_label }}</span></span>
+                <span class="tabular shrink-0">{{ item.line_total|toman }} تومان</span>
+            </li>
+            {% endfor %}
+        </ul>
+
+        <dl class="space-y-2 text-body border-t border-sand pt-3">
+            <div class="flex justify-between"><dt class="text-espresso/70">جمع اقلام</dt><dd class="tabular">{{ order.subtotal|toman }}</dd></div>
+            {% if order.discount %}<div class="flex justify-between text-pistachio-dark"><dt>تخفیف</dt><dd class="tabular">−{{ order.discount|toman }}</dd></div>{% endif %}
+            <div class="flex justify-between"><dt class="text-espresso/70">مالیات ۹٪</dt><dd class="tabular">{{ order.vat_amount|toman }}</dd></div>
+            <div class="flex justify-between"><dt class="text-espresso/70">{{ order.shipping_label|default:"هزینه ارسال" }}</dt><dd class="tabular">{{ order.shipping_cost|toman }}</dd></div>
+            <div class="flex justify-between text-h3 border-t border-sand pt-2"><dt>مجموع</dt><dd class="price tabular">{{ order.total|toman }} تومان</dd></div>
+        </dl>
+
+        <div class="border-t border-sand pt-3 text-body-sm text-espresso/80">
+            <div class="font-medium text-espresso mb-1">ارسال به</div>
+            {{ order.receiver_name }} — {{ order.phone }}<br>
+            {{ order.province }}، {{ order.city }}، {{ order.address_line }}<br>
+            کد پستی: <span class="tabular">{{ order.postal_code|fa }}</span>
+        </div>
+    </div>
+
+    <div class="text-center mt-6">
+        <a href="/products/" class="text-body-sm text-saffron-dark hover:text-saffron">→ ادامه خرید</a>
+    </div>
+</section>
+{% endblock %}
