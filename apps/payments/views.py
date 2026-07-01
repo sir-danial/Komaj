@@ -1,8 +1,10 @@
 import logging
 
+from django.conf import settings
 from django.contrib import messages
 from django.db import transaction
 from django.db.models import F
+from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 
@@ -10,7 +12,7 @@ from apps.cart.cart import Cart
 from apps.catalog.models import ProductVariant
 from apps.orders.models import Order
 
-from .gateways import get_gateway
+from .gateways import PaymentError, get_gateway
 from .models import Payment
 
 logger = logging.getLogger(__name__)
@@ -22,7 +24,13 @@ def payment_start(request, token):
         messages.info(request, "این سفارش قبلاً پرداخت شده است.")
         return redirect(order.get_absolute_url())
 
-    gateway = get_gateway()
+    try:
+        gateway = get_gateway()  # raises PaymentError in prod if unconfigured
+    except PaymentError:
+        logger.error("payment gateway not configured for order %s", order.code)
+        messages.error(request, "درگاه پرداخت در حال حاضر در دسترس نیست. لطفاً بعداً تلاش کنید.")
+        return redirect(order.get_absolute_url())
+
     payment = Payment.objects.create(order=order, gateway=gateway.name, amount=order.total)
     callback_url = request.build_absolute_uri(reverse("payments:callback"))
 
@@ -93,11 +101,21 @@ def _verify_and_settle(payment):
             ProductVariant.objects.filter(pk=item.variant_id).update(
                 stock_qty=F("stock_qty") - item.quantity
             )
+        # low volume + payment already captured: don't fail after capture, but
+        # flag any oversell (stock went negative) for admin follow-up.
+        oversold = ProductVariant.objects.filter(
+            order_items__order=order, stock_qty__lt=0
+        ).values_list("sku", flat=True)
+        if oversold:
+            logger.error("OVERSOLD after paying order %s: variants %s",
+                         order.code, list(oversold))
     return True
 
 
 def mock_gateway(request, authority):
-    """Local stand-in for the bank's StartPay page (mock gateway only)."""
+    """Local stand-in for the bank's StartPay page. Dev only — never in prod."""
+    if not getattr(settings, "PAYMENTS_ALLOW_MOCK", settings.DEBUG):
+        raise Http404
     payment = get_object_or_404(Payment.objects.select_related("order"), authority=authority)
     callback = reverse("payments:callback")
     return render(request, "payments/mock_gateway.html", {

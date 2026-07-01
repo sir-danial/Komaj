@@ -8,6 +8,7 @@ that no longer qualifies is silently dropped).
 from decimal import Decimal
 
 from django.core.exceptions import ValidationError
+from django.db.models import F
 
 from .models import Coupon, CouponRedemption
 
@@ -56,6 +57,10 @@ def session_discount(request, subtotal):
 
 
 def record_redemption(coupon, order):
-    """Persist a redemption and bump the usage counter (called on order creation)."""
+    """Persist a redemption and bump the usage counter (called on order creation).
+
+    Uses an atomic F() increment (not a stale read-modify-write) so concurrent
+    redemptions can't lose updates and slip past ``usage_limit``.
+    """
     CouponRedemption.objects.create(coupon=coupon, order=order, amount=order.discount)
-    Coupon.objects.filter(pk=coupon.pk).update(used_count=coupon.used_count + 1)
+    Coupon.objects.filter(pk=coupon.pk).update(used_count=F("used_count") + 1)

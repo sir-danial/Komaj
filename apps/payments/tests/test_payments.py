@@ -3,15 +3,28 @@ from decimal import Decimal
 import pytest
 
 from apps.orders.models import Order
-from apps.payments.gateways import MockGateway, ZarinpalGateway, get_gateway
+from apps.payments.gateways import MockGateway, PaymentError, ZarinpalGateway, get_gateway
 from apps.payments.models import Payment
 
 pytestmark = pytest.mark.django_db
 
 
 def test_get_gateway_defaults_to_mock(settings):
-    settings.ZARINPAL_MERCHANT_ID = ""
+    settings.ZARINPAL_MERCHANT_ID = ""  # allow_mock_payments fixture enables mock
     assert isinstance(get_gateway(), MockGateway)
+
+
+def test_get_gateway_fails_closed_in_production(settings):
+    # no merchant id + mock not allowed must NOT silently fall back to the mock
+    settings.ZARINPAL_MERCHANT_ID = ""
+    settings.PAYMENTS_ALLOW_MOCK = False
+    with pytest.raises(PaymentError):
+        get_gateway()
+
+
+def test_mock_gateway_page_404_in_production(client, settings):
+    settings.PAYMENTS_ALLOW_MOCK = False
+    assert client.get("/payment/mock/anything/").status_code == 404
 
 
 def test_get_gateway_uses_zarinpal_when_configured(settings):

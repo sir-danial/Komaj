@@ -6,6 +6,14 @@ from apps.catalog.models import Category, Product, ProductVariant
 from apps.orders.models import Order, OrderItem
 
 
+@pytest.fixture(autouse=True)
+def allow_mock_payments(settings):
+    """Tests run with DEBUG=False; opt into the mock gateway explicitly.
+    Tests that assert the production fail-closed behavior override this to False."""
+    settings.PAYMENTS_ALLOW_MOCK = True
+    settings.ZARINPAL_MERCHANT_ID = ""
+
+
 @pytest.fixture
 def variant(db):
     cat = Category.objects.create(name="شیرینی", slug="sweets")

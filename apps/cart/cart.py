@@ -58,14 +58,20 @@ class Cart:
     # --- reading --------------------------------------------------------
     def _variants(self):
         ids = [int(k) for k in self.cart.keys()]
-        return {v.pk: v for v in ProductVariant.objects.filter(pk__in=ids).select_related("product")}
+        # only active variants are purchasable; deactivated/deleted ones fall away
+        return {
+            v.pk: v
+            for v in ProductVariant.objects.filter(pk__in=ids, is_active=True).select_related("product")
+        }
 
     def __iter__(self):
         variants = self._variants()
-        for key, item in self.cart.items():
+        stale = []
+        for key, item in list(self.cart.items()):
             variant = variants.get(int(key))
             if variant is None:
-                continue  # variant was deleted — skip (cleaned on next write)
+                stale.append(key)  # deleted or deactivated — drop it
+                continue
             quantity = Decimal(item["quantity"])
             unit_price = Decimal(item["unit_price"])
             yield {
@@ -74,6 +80,10 @@ class Cart:
                 "unit_price": unit_price,
                 "line_total": (unit_price * quantity).quantize(Decimal("1")),
             }
+        if stale:
+            for key in stale:
+                self.cart.pop(key, None)
+            self.save()
 
     def __len__(self):
         """Number of distinct line items (the «۳ کالا» badge)."""

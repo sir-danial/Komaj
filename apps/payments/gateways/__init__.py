@@ -19,5 +19,12 @@ def get_gateway():
     merchant_id = getattr(settings, "ZARINPAL_MERCHANT_ID", "")
     if merchant_id:
         return ZarinpalGateway(merchant_id=merchant_id, sandbox=settings.ZARINPAL_SANDBOX)
-    logger.warning("ZARINPAL_MERCHANT_ID not set — using MockGateway (no real payments).")
+    # Fail CLOSED in production: never silently accept the mock (which approves
+    # every payment) just because the merchant id env var is missing.
+    # Mock is allowed only when explicitly enabled (defaults to DEBUG).
+    if not getattr(settings, "PAYMENTS_ALLOW_MOCK", settings.DEBUG):
+        raise PaymentError(
+            "درگاه پرداخت پیکربندی نشده است (ZARINPAL_MERCHANT_ID تنظیم نشده)."
+        )
+    logger.warning("ZARINPAL_MERCHANT_ID not set — using MockGateway (dev only, no real payments).")
     return MockGateway()

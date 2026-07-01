@@ -69,3 +69,13 @@ def test_deleted_variant_skipped(request_with_session, weighted_variant):
     cart.add(weighted_variant, Decimal("0.5"))
     weighted_variant.delete()
     assert list(cart) == []
+
+
+def test_inactive_variant_dropped(request_with_session, weighted_variant):
+    cart = Cart(request_with_session())
+    cart.add(weighted_variant, Decimal("0.5"))
+    weighted_variant.is_active = False
+    weighted_variant.save()
+    # a deactivated product must not remain purchasable
+    assert list(cart) == []
+    assert cart.subtotal == Decimal("0")
