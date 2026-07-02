@@ -8,6 +8,19 @@
     <meta name="description" content="{% block description %}فروشگاه آنلاین کماج — شیرینی کیلویی دست‌ساز و قوطی‌های مکمل سنتی ایرانی، ارسال به سراسر ایران.{% endblock %}">
     <link rel="icon" href="{% static 'img/favicon.svg' %}" type="image/svg+xml">
     <link rel="stylesheet" href="{% static 'css/dist/output.css' %}">
+
+    {# --- SEO: canonical + Open Graph --- #}
+    <link rel="canonical" href="{{ request.scheme }}://{{ request.get_host }}{{ request.path }}">
+    <meta property="og:site_name" content="کماج">
+    <meta property="og:locale" content="fa_IR">
+    <meta property="og:type" content="{{ og.type|default:'website' }}">
+    <meta property="og:title" content="{{ og.title|default:'کماج — شیرینی سنتی و قوطی‌های اصیل ایرانی' }}">
+    <meta property="og:description" content="{{ og.description|default:'فروشگاه آنلاین کماج — شیرینی کیلویی دست‌ساز و قوطی‌های مکمل سنتی ایرانی.' }}">
+    <meta property="og:url" content="{{ og.url|default:request.build_absolute_uri }}">
+    {% if og.image %}<meta property="og:image" content="{{ og.image }}">{% endif %}
+
+    {# --- structured data (JSON-LD) --- #}
+    {% for d in jsonld %}{% ld_json d %}{% endfor %}
     {% block head_extra %}{% endblock %}
 </head>
 <body class="bg-cream text-espresso antialiased">
