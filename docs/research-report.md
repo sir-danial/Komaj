@@ -525,12 +525,12 @@ django-redis==5.4.*
 |------|-----|-------|
 | ۱ | اسکلت Django + Dockerfile + اولین deploy روی Hamravesh + CI. **موازی: شروع اینماد** | ✅ انجام شد (2026-04-19) — به‌علاوه Foundation فرانت (Phase A/B/C design-system §۸) جلوتر از پلن پیاده شد. |
 | ۲ | مدل‌ها (Decimal quantity)، admin | ✅ انجام شد (2026-07-01) — اپ `catalog` با Category/Product/ProductVariant، admin با inline، seed. (django-unfold و ArvanCloud به فاز بعد موکول شد.) |
-| ۳ | کاتالوگ، SEO (sitemap, JSON-LD)، جستجو ساده | 🟡 صفحات کاتالوگ (لیست/دسته/جزئیات) ✅ — SEO و جستجو ⏳ |
+| ۳ | کاتالوگ، SEO (sitemap, JSON-LD)، جستجو ساده | ✅ انجام شد — صفحات کاتالوگ + `sitemap.xml`/`robots.txt` + JSON-LD (Product/Breadcrumb/Organization) + Open Graph/canonical + جستجوی محصولات (`/search/`). (جستجوی trigram برای فاز ۲/Postgres.) |
 | ۴ | سبد خرید با ولیدیشن min_qty و step، تخمین هزینه پست، VAT ۹٪ | ✅ انجام شد — اپ `cart` (session)، `totals.py` (VAT ۹٪، ROUND_HALF_UP)، تخمین پست. |
 | ۵ | ثبت‌نام/ورود با OTP موبایل (Kavenegar) — **ثبت‌نام اختیاری (checkout مهمان فعال)** | ✅ انجام شد — اپ `accounts` (OTP کش‌محور با rate-limit، backend SMS Kavenegar/کنسول) + `orders` (checkout مهمان). |
 | ۶ | پرداخت Zarinpal (sandbox → prod)، گرفتن merchant_id پس از اینماد | ✅ انجام شد — اپ `payments` (الگوی Strategy: Zarinpal + Mock)، verify با idempotency و قفل ردیف، fail-closed در prod. merchant_id واقعی پس از اینماد فقط env است. **افزوده: کد تخفیف (`coupons`).** |
 | ۷ | محاسبه دقیق پست پیشتاز، SMS اعلان، فاکتور PDF (WeasyPrint) | ⏳ |
-| ۸ | Sentry، تست E2E، امنیت (CSRF، rate-limit OTP)، بک‌آپ، soft launch، gate برای `/_styleguide/` | 🟡 rate-limit OTP ✅، امنیت پرداخت (fail-closed) ✅، ۸۹ تست واحد ✅ — Sentry/E2E/بک‌آپ/gate ⏳ |
+| ۸ | Sentry، تست E2E، امنیت (CSRF، rate-limit OTP)، بک‌آپ، soft launch، gate برای `/_styleguide/` | 🟡 rate-limit OTP ✅، امنیت پرداخت (fail-closed) ✅، gate کردن `/_styleguide/` ✅، ۱۱۰ تست واحد ✅ — Sentry/E2E/بک‌آپ ⏳ |
 
 > جریان کامل happy-path (کاتالوگ ← سبد ← checkout ← پرداخت ← تأیید) به‌صورت end-to-end در مرورگر با درگاه mock تأیید شد (2026-07-01). دو مورد از security/code review رفع شد: fail-closed کردن درگاه در prod و افزایش اتمیک شمارنده کد تخفیف.
 
