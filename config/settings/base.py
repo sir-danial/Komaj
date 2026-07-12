@@ -1,3 +1,4 @@
+from decimal import Decimal
 from pathlib import Path
 import environ
 
@@ -32,6 +33,12 @@ INSTALLED_APPS = [
     "corsheaders",
 
     "apps.core",
+    "apps.catalog",
+    "apps.cart",
+    "apps.orders",
+    "apps.payments",
+    "apps.coupons",
+    "apps.accounts",
 ]
 
 MIDDLEWARE = [
@@ -60,6 +67,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "apps.cart.context_processors.cart",
             ],
         },
     },
@@ -138,6 +146,27 @@ else:
     }
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+LOGIN_URL = "/login/"
+
+# --- OTP (cache-backed; rate limits guard against brute force) ---
+OTP_TTL = env.int("OTP_TTL", default=120)
+OTP_RESEND_COOLDOWN = env.int("OTP_RESEND_COOLDOWN", default=60)
+OTP_MAX_SENDS_PER_HOUR = env.int("OTP_MAX_SENDS_PER_HOUR", default=5)
+OTP_MAX_ATTEMPTS = env.int("OTP_MAX_ATTEMPTS", default=5)
+
+# --- Commerce pricing (all amounts in Toman) ---
+# VAT 9% per Iran tax rules (modular so it can change without touching call sites).
+VAT_RATE = Decimal(env("VAT_RATE", default="0.09"))
+
+# Shipping methods shown at checkout. Cart page uses SHIPPING_ESTIMATE_KEY for a preview.
+SHIPPING_METHODS = [
+    {"key": "post", "label": "پست پیشتاز (۲ تا ۴ روز کاری)", "cost": Decimal("45000"),
+     "tehran_only": False},
+    {"key": "tehran_courier", "label": "پیک تهران (همان روز)", "cost": Decimal("80000"),
+     "tehran_only": True},
+]
+SHIPPING_ESTIMATE_KEY = "post"  # method used for the cart-page estimate
 
 # --- Third-party service credentials ---
 ZARINPAL_MERCHANT_ID = env("ZARINPAL_MERCHANT_ID", default="")

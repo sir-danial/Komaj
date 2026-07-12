@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+{% load komaj_extras %}
+
+{% block title %}{{ product.name }} — کماج{% endblock %}
+{% block description %}{{ product.description|striptags|truncatechars:155 }}{% endblock %}
+
+{% block content %}
+{% include "components/breadcrumb.html" with items=breadcrumb %}
+
+<section class="section grid gap-8 lg:grid-cols-2">
+    {# --- Gallery --- #}
+    <div class="space-y-3">
+        <div class="aspect-product rounded-xl bg-sand overflow-hidden flex items-center justify-center">
+            {% if images %}
+                <img id="main-image" src="{{ images.0.image.url }}" alt="{{ images.0.alt|default:product.name }}" class="h-full w-full object-cover">
+            {% else %}
+                <span class="text-espresso/30 text-body-sm">🖼 تصویر محصول (به‌زودی)</span>
+            {% endif %}
+        </div>
+        {% if images|length > 1 %}
+            <div class="grid grid-cols-5 gap-2">
+                {% for img in images %}
+                    <button type="button" class="aspect-square rounded-lg overflow-hidden bg-sand border border-sand hover:border-saffron"
+                            onclick="document.getElementById('main-image').src='{{ img.image.url }}'">
+                        <img src="{{ img.image.url }}" alt="{{ img.alt|default:product.name }}" class="h-full w-full object-cover">
+                    </button>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+
+    {# --- Buy box --- #}
+    <div class="space-y-5">
+        <div class="flex flex-wrap items-center gap-2">
+            {% if product.is_fresh %}<span class="badge badge-pistachio">🌿 تازه پخت</span>{% endif %}
+            {% if product.origin %}<span class="badge badge-sand">خاستگاه: {{ product.origin }}</span>{% endif %}
+        </div>
+
+        <h1 class="text-h1 text-espresso">{{ product.name }}</h1>
+
+        {% if variants %}
+        <form method="post" action="/cart/add/" class="space-y-5" id="add-to-cart">
+            {% csrf_token %}
+
+            {% if variants|length > 1 %}
+            <fieldset class="space-y-2">
+                <legend class="label">انتخاب نوع</legend>
+                <div class="flex flex-wrap gap-2">
+                    {% for v in variants %}
+                    <label class="cursor-pointer">
+                        <input type="radio" name="variant_id" value="{{ v.pk }}" class="peer sr-only"
+                               data-price="{{ v.unit_price }}" data-unit="{{ v.unit_label }}"
+                               data-min="{{ v.min_order_qty }}" data-step="{{ v.qty_step }}"
+                               {% if forloop.first %}checked{% endif %}
+                               {% if not v.in_stock %}disabled{% endif %}>
+                        <span class="badge badge-sand peer-checked:badge-saffron peer-disabled:opacity-40 px-4 py-2">
+                            {{ v.label|default:v.product.name }}{% if not v.in_stock %} (ناموجود){% endif %}
+                        </span>
+                    </label>
+                    {% endfor %}
+                </div>
+            </fieldset>
+            {% else %}
+                {% with v=variants.0 %}
+                <input type="hidden" name="variant_id" value="{{ v.pk }}"
+                       data-price="{{ v.unit_price }}" data-unit="{{ v.unit_label }}"
+                       data-min="{{ v.min_order_qty }}" data-step="{{ v.qty_step }}">
+                {% endwith %}
+            {% endif %}
+
+            <div class="flex items-baseline gap-2">
+                <span class="price text-display" id="unit-price">{{ variants.0.unit_price|toman }}</span>
+                <span class="text-body text-espresso/60">تومان / <span id="unit-label">{{ variants.0.unit_label }}</span></span>
+            </div>
+
+            <div class="space-y-1.5">
+                <label for="quantity" class="label">مقدار (<span id="qty-unit">{{ variants.0.unit_label }}</span>)</label>
+                <div class="flex items-stretch gap-2 w-fit">
+                    <button type="button" class="btn btn-secondary px-4" id="qty-minus" aria-label="کاهش">−</button>
+                    <input type="number" id="quantity" name="quantity"
+                           class="field text-center w-28 tabular"
+                           value="{{ variants.0.min_order_qty }}"
+                           min="{{ variants.0.min_order_qty }}"
+                           step="{{ variants.0.qty_step }}" inputmode="decimal" required>
+                    <button type="button" class="btn btn-secondary px-4" id="qty-plus" aria-label="افزایش">+</button>
+                </div>
+                <p class="helper" id="qty-help">
+                    حداقل {{ variants.0.min_order_qty|kg }} — گام {{ variants.0.qty_step|kg }} {{ variants.0.unit_label }}
+                </p>
+            </div>
+
+            <div class="flex items-baseline gap-2 border-t border-sand pt-4">
+                <span class="text-body text-espresso/70">جمع:</span>
+                <span class="price text-h2" id="line-total">—</span>
+                <span class="text-body-sm text-espresso/60">تومان</span>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-lg w-full">افزودن به سبد خرید</button>
+        </form>
+        {% else %}
+            {% include "components/alert.html" with tone="warning" message="این محصول در حال حاضر برای فروش موجود نیست." %}
+        {% endif %}
+
+        {% if product.description %}
+        <div class="prose-komaj border-t border-sand pt-5">
+            <h2 class="text-h3 mb-2">توضیحات</h2>
+            <p class="text-body text-espresso/80 whitespace-pre-line">{{ product.description }}</p>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+{% if related_cards %}
+<section class="section">
+    <h2 class="text-h2 mb-6">محصولات مرتبط</h2>
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {% for p in related_cards %}
+            {% include "components/product_card.html" with product=p %}
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+{% endblock %}
+
+{% block body_extra %}
+<script>
+(function () {
+  const form = document.getElementById('add-to-cart');
+  if (!form) return;
+  const qty = document.getElementById('quantity');
+  const lineTotal = document.getElementById('line-total');
+  const unitPriceEl = document.getElementById('unit-price');
+  const unitLabelEl = document.getElementById('unit-label');
+  const qtyUnitEl = document.getElementById('qty-unit');
+  const qtyHelp = document.getElementById('qty-help');
+
+  const faDigits = (s) => String(s).replace(/[0-9]/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]);
+  const groupFa = (n) => faDigits(Math.round(n).toLocaleString('en-US')).replace(/,/g, '٬');
+  const trim = (s) => parseFloat(s).toString();
+
+  function selectedInput() {
+    return form.querySelector('input[name="variant_id"]:checked')
+        || form.querySelector('input[name="variant_id"]');
+  }
+
+  function applyVariant() {
+    const v = selectedInput();
+    if (!v) return;
+    const min = v.dataset.min, step = v.dataset.step, unit = v.dataset.unit;
+    qty.min = min; qty.step = step;
+    if (parseFloat(qty.value) < parseFloat(min)) qty.value = min;
+    if (unitPriceEl) unitPriceEl.textContent = groupFa(v.dataset.price);
+    [unitLabelEl, qtyUnitEl].forEach(el => { if (el) el.textContent = unit; });
+    if (qtyHelp) qtyHelp.textContent = `حداقل ${faDigits(trim(min))} — گام ${faDigits(trim(step))} ${unit}`;
+    recompute();
+  }
+
+  function recompute() {
+    const v = selectedInput();
+    if (!v) return;
+    const total = parseFloat(v.dataset.price) * (parseFloat(qty.value) || 0);
+    lineTotal.textContent = total > 0 ? groupFa(total) : '—';
+  }
+
+  document.getElementById('qty-plus')?.addEventListener('click', () => {
+    qty.value = (parseFloat(qty.value || 0) + parseFloat(qty.step || 1)).toFixed(2).replace(/\.?0+$/, '');
+    recompute();
+  });
+  document.getElementById('qty-minus')?.addEventListener('click', () => {
+    const next = parseFloat(qty.value || 0) - parseFloat(qty.step || 1);
+    if (next >= parseFloat(qty.min || 0)) {
+      qty.value = next.toFixed(2).replace(/\.?0+$/, '');
+      recompute();
+    }
+  });
+  qty.addEventListener('input', recompute);
+  form.querySelectorAll('input[name="variant_id"]').forEach(el => el.addEventListener('change', applyVariant));
+
+  applyVariant();
+})();
+</script>
+{% endblock %}

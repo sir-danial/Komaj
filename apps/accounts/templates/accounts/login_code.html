@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load komaj_extras %}
+
+{% block title %}تأیید کد — کماج{% endblock %}
+
+{% block content %}
+<section class="section max-w-md mx-auto">
+    <div class="card space-y-5 py-8">
+        <div class="text-center space-y-1">
+            <h1 class="text-h2">کد تأیید را وارد کنید</h1>
+            <p class="text-body-sm text-espresso/70">
+                کد ۶ رقمی ارسال‌شده به <span class="tabular" dir="ltr">{{ phone }}</span> را وارد کنید.
+                <a href="{% url 'accounts:login' %}" class="text-saffron-dark hover:text-saffron">تغییر شماره</a>
+            </p>
+        </div>
+
+        <form method="post" action="{% url 'accounts:verify' %}" novalidate class="space-y-4">
+            {% csrf_token %}
+            <div>
+                <input type="text" name="code" inputmode="numeric" pattern="[0-9]*" maxlength="6" dir="ltr"
+                       class="field text-center tabular text-h2 tracking-[0.5em]" placeholder="------" autofocus autocomplete="one-time-code">
+                {% for e in form.code.errors %}<p class="error-text text-center">{{ e }}</p>{% endfor %}
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg w-full">تأیید و ورود</button>
+        </form>
+
+        <form method="post" action="{% url 'accounts:resend' %}" class="text-center">
+            {% csrf_token %}
+            <button type="submit" class="text-body-sm text-saffron-dark hover:text-saffron">ارسال مجدد کد</button>
+        </form>
+    </div>
+</section>
+{% endblock %}

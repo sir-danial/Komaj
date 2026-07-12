@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load komaj_extras %}
+
+{% block title %}{% if query %}جستجو: {{ query }}{% else %}جستجو{% endif %} — کماج{% endblock %}
+
+{% block content %}
+{% include "components/breadcrumb.html" with items=breadcrumb %}
+
+<section class="section">
+    <h1 class="text-h1 mb-4">جستجو</h1>
+
+    <form action="{% url 'catalog:search' %}" method="get" role="search" class="mb-8 max-w-xl">
+        <label for="search-q" class="sr-only">جستجو در محصولات</label>
+        <div class="relative">
+            <input id="search-q" type="search" name="q" value="{{ query }}" class="field ps-11" placeholder="جستجو در محصولات…" aria-label="جستجو در محصولات" autofocus>
+            <span class="absolute inset-y-0 start-0 flex items-center ps-3 text-espresso/50" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-5 w-5"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+            </span>
+        </div>
+    </form>
+
+    {% if query %}
+        <p class="text-body text-espresso/70 mb-6">
+            {% if cards %}{{ cards|length|fa }} نتیجه برای «{{ query }}»{% else %}نتیجه‌ای برای «{{ query }}» یافت نشد.{% endif %}
+        </p>
+        {% if cards %}
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {% for p in cards %}{% include "components/product_card.html" with product=p %}{% endfor %}
+        </div>
+        {% else %}
+        <div class="card text-center py-12">
+            <p class="text-h3 mb-2">چیزی پیدا نشد <span aria-hidden="true">🔍</span></p>
+            <p class="text-body-sm text-espresso/60">با کلمات دیگری جستجو کنید یا <a href="/products/" class="text-saffron-dark hover:text-saffron">همه محصولات</a> را ببینید.</p>
+        </div>
+        {% endif %}
+    {% else %}
+        <p class="text-body text-espresso/60">برای جستجو، عبارتی وارد کنید.</p>
+    {% endif %}
+</section>
+{% endblock %}

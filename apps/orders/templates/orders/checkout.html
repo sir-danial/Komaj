@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+{% load komaj_extras %}
+
+{% block title %}تسویه حساب — کماج{% endblock %}
+
+{% block content %}
+<section class="section">
+    <h1 class="text-h1 mb-6">تسویه حساب</h1>
+
+    <form method="post" action="{% url 'orders:checkout' %}" novalidate>
+        {% csrf_token %}
+        <div class="grid gap-8 lg:grid-cols-3 items-start">
+            <div class="lg:col-span-2 space-y-8">
+                {# --- Receiver + address --- #}
+                <div class="card space-y-4">
+                    <h2 class="text-h3">آدرس و گیرنده</h2>
+                    {% if form.non_field_errors %}{% include "components/alert.html" with tone="error" message=form.non_field_errors.0 %}{% endif %}
+                    <div class="grid sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="label" for="{{ form.receiver_name.id_for_label }}">نام گیرنده <span class="text-pomegranate">*</span></label>
+                            {{ form.receiver_name }}
+                            {% for e in form.receiver_name.errors %}<p class="error-text">{{ e }}</p>{% endfor %}
+                        </div>
+                        <div>
+                            <label class="label" for="{{ form.phone.id_for_label }}">شماره تماس <span class="text-pomegranate">*</span></label>
+                            {{ form.phone }}
+                            {% for e in form.phone.errors %}<p class="error-text">{{ e }}</p>{% endfor %}
+                        </div>
+                        <div>
+                            <label class="label" for="{{ form.province.id_for_label }}">استان <span class="text-pomegranate">*</span></label>
+                            {{ form.province }}
+                            {% for e in form.province.errors %}<p class="error-text">{{ e }}</p>{% endfor %}
+                        </div>
+                        <div>
+                            <label class="label" for="{{ form.city.id_for_label }}">شهر <span class="text-pomegranate">*</span></label>
+                            {{ form.city }}
+                            {% for e in form.city.errors %}<p class="error-text">{{ e }}</p>{% endfor %}
+                        </div>
+                        <div>
+                            <label class="label" for="{{ form.postal_code.id_for_label }}">کد پستی <span class="text-pomegranate">*</span></label>
+                            {{ form.postal_code }}
+                            {% for e in form.postal_code.errors %}<p class="error-text">{{ e }}</p>{% endfor %}
+                        </div>
+                        <div>
+                            <label class="label" for="{{ form.email.id_for_label }}">ایمیل (اختیاری)</label>
+                            {{ form.email }}
+                            {% for e in form.email.errors %}<p class="error-text">{{ e }}</p>{% endfor %}
+                        </div>
+                    </div>
+                    <div>
+                        <label class="label" for="{{ form.address_line.id_for_label }}">آدرس کامل <span class="text-pomegranate">*</span></label>
+                        {{ form.address_line }}
+                        {% for e in form.address_line.errors %}<p class="error-text">{{ e }}</p>{% endfor %}
+                    </div>
+                </div>
+
+                {# --- Shipping method --- #}
+                <div class="card space-y-3">
+                    <h2 class="text-h3">روش ارسال</h2>
+                    {% for e in form.shipping_method.errors %}<p class="error-text">{{ e }}</p>{% endfor %}
+                    <div class="space-y-2">
+                        {% for m in shipping_methods %}
+                        <label class="flex items-center gap-3 rounded-md border border-sand p-3 cursor-pointer has-[:checked]:border-saffron has-[:checked]:bg-saffron/5">
+                            <input type="radio" name="shipping_method" value="{{ m.key }}" data-cost="{{ m.cost }}" {% if forloop.first %}checked{% endif %} class="accent-saffron js-ship">
+                            <span class="flex-1">{{ m.label }}{% if m.tehran_only %} <span class="badge badge-sand">فقط تهران</span>{% endif %}</span>
+                            <span class="price tabular">{{ m.cost|toman }} تومان</span>
+                        </label>
+                        {% endfor %}
+                    </div>
+                    <div>
+                        <label class="label" for="{{ form.note.id_for_label }}">توضیحات سفارش (اختیاری)</label>
+                        {{ form.note }}
+                    </div>
+                </div>
+            </div>
+
+            {# --- Summary + pay --- #}
+            <aside class="card bg-sand/40 lg:sticky lg:top-28 space-y-4" id="summary"
+                   data-subtotal="{{ totals.subtotal }}" data-vat="{{ totals.vat }}" data-discount="{{ totals.discount }}">
+                <h2 class="text-h3">خلاصه سفارش <span class="text-body-sm text-espresso/50">({{ cart.count|fa }} کالا)</span></h2>
+                <ul class="space-y-1.5 text-body-sm">
+                    {% for item in items %}
+                    <li class="flex justify-between gap-2">
+                        <span class="text-espresso/80 line-clamp-1">{{ item.variant.product.name }} × {{ item.quantity|kg }}</span>
+                        <span class="tabular shrink-0">{{ item.line_total|toman }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+                <dl class="space-y-2 text-body border-t border-espresso/15 pt-3">
+                    <div class="flex justify-between"><dt class="text-espresso/70">جمع اقلام</dt><dd class="tabular">{{ totals.subtotal|toman }}</dd></div>
+                    {% if totals.discount %}
+                    <div class="flex justify-between text-pistachio-dark"><dt>تخفیف{% if coupon %} ({{ coupon.code }}){% endif %}</dt><dd class="tabular">−{{ totals.discount|toman }}</dd></div>
+                    {% endif %}
+                    <div class="flex justify-between"><dt class="text-espresso/70">مالیات ۹٪</dt><dd class="tabular">{{ totals.vat|toman }}</dd></div>
+                    <div class="flex justify-between"><dt class="text-espresso/70">هزینه ارسال</dt><dd class="tabular" id="sum-shipping">{{ totals.shipping|toman }}</dd></div>
+                </dl>
+                <div class="border-t border-espresso/15 pt-3 flex justify-between items-baseline">
+                    <span class="text-h3">مجموع</span>
+                    <span class="price text-h2 tabular"><span id="sum-total">{{ totals.total|toman }}</span> <span class="text-body-sm font-normal text-espresso/60">تومان</span></span>
+                </div>
+
+                <div class="rounded-md border border-sand p-3 flex items-center gap-2 text-body-sm">
+                    <input type="radio" checked disabled class="accent-saffron"> درگاه پرداخت زرین‌پال 🔒
+                </div>
+
+                <label class="flex items-start gap-2 text-body-sm">
+                    {{ form.accept_terms }}
+                    <span>شرایط و قوانین فروشگاه را می‌پذیرم</span>
+                </label>
+                {% for e in form.accept_terms.errors %}<p class="error-text">{{ e }}</p>{% endfor %}
+
+                <button type="submit" class="btn btn-primary btn-lg w-full">🔒 پرداخت <span id="pay-amount">{{ totals.total|toman }}</span> تومان</button>
+                <p class="helper text-center">با کلیک روی پرداخت به درگاه امن زرین‌پال منتقل می‌شوید.</p>
+            </aside>
+        </div>
+    </form>
+</section>
+{% endblock %}
+
+{% block body_extra %}
+<script>
+(function () {
+  const summary = document.getElementById('summary');
+  if (!summary) return;
+  const subtotal = parseFloat(summary.dataset.subtotal) || 0;
+  const vat = parseFloat(summary.dataset.vat) || 0;
+  const discount = parseFloat(summary.dataset.discount) || 0;
+  const faGroup = (n) => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, '٬')
+      .replace(/[0-9]/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]);
+  function update() {
+    const sel = document.querySelector('.js-ship:checked');
+    const ship = sel ? (parseFloat(sel.dataset.cost) || 0) : 0;
+    document.getElementById('sum-shipping').textContent = faGroup(ship);
+    const total = faGroup(subtotal - discount + vat + ship);
+    document.getElementById('sum-total').textContent = total;
+    document.getElementById('pay-amount').textContent = total;
+  }
+  document.querySelectorAll('.js-ship').forEach(el => el.addEventListener('change', update));
+  update();
+})();
+</script>
+{% endblock %}

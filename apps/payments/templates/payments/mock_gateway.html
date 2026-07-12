@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load komaj_extras %}
+
+{% block title %}درگاه پرداخت آزمایشی — کماج{% endblock %}
+
+{% block content %}
+<section class="section max-w-md mx-auto">
+    {% include "components/alert.html" with tone="warning" title="درگاه آزمایشی" message="این یک درگاه شبیه‌سازی‌شده برای توسعه است (بدون پرداخت واقعی). با تنظیم ZARINPAL_MERCHANT_ID، درگاه واقعی زرین‌پال جایگزین می‌شود." %}
+
+    <div class="card mt-6 text-center space-y-5 py-8">
+        <div class="h-16 w-16 mx-auto rounded-full bg-saffron/20 flex items-center justify-center text-h2">🔒</div>
+        <div>
+            <p class="text-body text-espresso/70">پرداخت سفارش</p>
+            <p class="text-h3 tabular">{{ order.code|fa }}</p>
+        </div>
+        <p class="price text-display tabular">{{ order.total|toman }} <span class="text-body font-normal text-espresso/60">تومان</span></p>
+
+        <div class="flex flex-col gap-3 pt-2">
+            <a href="{{ approve_url }}" class="btn btn-primary btn-lg w-full">پرداخت موفق ✓</a>
+            <a href="{{ cancel_url }}" class="btn btn-secondary w-full">انصراف</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

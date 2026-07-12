@@ -7,11 +7,11 @@ Params:
     .href          *
     .image_url     *
     .image_alt
-    .price_rial    * (Decimal; قیمت به ریال)
+    .price         * (Decimal; قیمت به تومان)
     .unit_label      — «کیلوگرم» | «عدد» | «۲۰۰ گرم» ...
     .weight_badge    — متن badge (مثل «۰.۵kg+»)
     .is_fresh (bool) — نشان «تازه پخت»
-    .old_price_rial  — برای حالت sale
+    .old_price       — برای حالت sale (تومان)
 {% endcomment %}
 <article class="card card-interactive flex flex-col">
     <a href="{{ product.href }}" class="block relative overflow-hidden rounded-lg">
@@ -33,17 +33,17 @@ Params:
             <a href="{{ product.href }}" class="hover:text-saffron">{{ product.name }}</a>
         </h3>
         <div class="flex items-baseline gap-2">
-            {% if product.old_price_rial %}
-                <span class="price-old text-body-sm">{{ product.old_price_rial|toman }}</span>
-                <span class="price-sale text-body-lg">{{ product.price_rial|toman }}</span>
+            {% if product.old_price %}
+                <span class="price-old text-body-sm">{{ product.old_price|toman }}</span>
+                <span class="price-sale text-body-lg">{{ product.price|toman }}</span>
             {% else %}
-                <span class="price text-body-lg">{{ product.price_rial|toman }}</span>
+                <span class="price text-body-lg">{{ product.price|toman }}</span>
             {% endif %}
             <span class="text-body-sm text-espresso/60">تومان{% if product.unit_label %} / {{ product.unit_label }}{% endif %}</span>
         </div>
     </div>
 
     <div class="mt-4">
-        <a href="{{ product.href }}" class="btn btn-primary w-full">افزودن به سبد</a>
+        <a href="{{ product.href }}" class="btn btn-primary w-full">مشاهده و خرید</a>
     </div>
 </article>
