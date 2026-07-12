@@ -25,3 +25,11 @@ def test_healthz_ok(client):
     resp = client.get("/healthz/")
     assert resp.status_code == 200
     assert resp.json()["status"] == "ok"
+
+
+def test_healthz_bypasses_allowed_hosts(client, settings):
+    # kube probes hit the pod by bare IP, which is never in ALLOWED_HOSTS
+    settings.ALLOWED_HOSTS = ["komaj.ir"]
+    resp = client.get("/healthz/", HTTP_HOST="10.0.110.178:8000")
+    assert resp.status_code == 200
+    assert resp.json()["status"] == "ok"
