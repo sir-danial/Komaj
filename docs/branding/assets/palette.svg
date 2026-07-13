@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="942" height="402" viewBox="0 0 942 402">
+  <!-- پالت رنگ برند کماج — بازتولیدشده از چیدمان flexbox سند برند (خط‌پایه‌ها با مرورگر اندازه‌گیری شده) -->
+  <rect width="942" height="402" fill="#EDE7DA"></rect>
+  <rect x="708" y="24" width="210" height="168" rx="12" fill="#FFFFFF"></rect>
+  <path d="M 708 36 a 12 12 0 0 1 12 -12 h 186 a 12 12 0 0 1 12 12 v 80 h -210 z" fill="#FAF6EE" stroke="rgba(46,31,20,.08)"></path>
+  <text x="904" y="142" text-anchor="end" font-family="&#39;Vazirmatn&#39;, sans-serif" font-size="15" font-weight="700" fill="#2E1F14">#FAF6EE</text>
+  <text x="904" y="164" text-anchor="end" font-family="&#39;Vazirmatn&#39;, sans-serif" font-size="13" font-weight="600" fill="#2E1F14" direction="rtl">کرم</text>
+  <text x="904" y="184" text-anchor="end" font-family="&#39;Vazirmatn&#39;, sans-serif" font-size="10.5" fill="#8C7A63" direction="rtl">پس‌زمینه اصلی برچسب و جعبه</text>
+  <rect x="480" y="24" width="210" height="168" rx="12" fill="#FFFFFF"></rect>
+  <path d="M 480 36 a 12 12 0 0 1 12 -12 h 186 a 12 12 0 0 1 12 12 v 80 h -210 z" fill="#2E1F14" stroke="rgba(46,31,20,.08)"></path>
+  <text x="676" y="142" text-anchor="end" font-family="&#39;Vazirmatn&#39;, sans-serif" font-size="15" font-weight="700" fill="#2E1F14">#2E1F14</text>
+  <text x="676" y="164" text-anchor="end" font-family="&#39;Vazirmatn&#39;, sans-serif" font-size="13" font-weight="600" fill="#2E1F14" direction="rtl">اسپرسو</text>
+  <text x="676" y="184" text-anchor="end" font-family="&#39;Vazirmatn&#39;, sans-serif" font-size="10.5" fill="#8C7A63" direction="rtl">متن اصلی و نوار تیره</text>
+  <rect x="252" y="24" width="210" height="168" rx="12" fill="#FFFFFF"></rect>
+  <path d="M 252 36 a 12 12 0 0 1 12 -12 h 186 a 12 12 0 0 1 12 12 v 80 h -210 z" fill="#C79A2C" stroke="rgba(46,31,20,.08)"></path>
+  <text x="448" y="142" text-anchor="end" font-family="&#39;Vazirmatn&#39;, sans-serif" font-size="15" font-weight="700" fill="#2E1F14">#C79A2C</text>
+  <text x="448" y="164" text-anchor="end" font-family="&#39;Vazirmatn&#39;, sans-serif" font-size="13" font-weight="600" fill="#2E1F14" direction="rtl">زعفرانی</text>
+  <text x="448" y="184" text-anchor="end" font-family="&#39;Vazirmatn&#39;, sans-serif" font-size="10.5" fill="#8C7A63" direction="rtl">اکسنت اصلی · حلوازرده · شیرمال زعفرانی</text>
+  <rect x="24" y="24" width="210" height="168" rx="12" fill="#FFFFFF"></rect>
+  <path d="M 24 36 a 12 12 0 0 1 12 -12 h 186 a 12 12 0 0 1 12 12 v 80 h -210 z" fill="#A8821F" stroke="rgba(46,31,20,.08)"></path>
+  <text x="220" y="142" text-anchor="end" font-family="&#39;Vazirmatn&#39;, sans-serif" font-size="15" font-weight="700" fill="#2E1F14">#A8821F</text>
+  <text x="220" y="164" text-anchor="end" font-family="&#39;Vazirmatn&#39;, sans-serif" font-size="13" font-weight="600" fill="#2E1F14" direction="rtl">زعفرانی تیره</text>
+  <text x="220" y="184" text-anchor="end" font-family="&#39;Vazirmatn&#39;, sans-serif" font-size="10.5" fill="#8C7A63" direction="rtl">حلوا زرده (روغن حیوانی)</text>
+  <rect x="708" y="210" width="210" height="168" rx="12" fill="#FFFFFF"></rect>
+  <path d="M 708 222 a 12 12 0 0 1 12 -12 h 186 a 12 12 0 0 1 12 12 v 80 h -210 z" fill="#7A8B3D" stroke="rgba(46,31,20,.08)"></path>
+  <text x="904" y="328" text-anchor="end" font-family="&#39;Vazirmatn&#39;, sans-serif" font-size="15" font-weight="700" fill="#2E1F14">#7A8B3D</text>
+  <text x="904" y="350" text-anchor="end" font-family="&#39;Vazirmatn&#39;, sans-serif" font-size="13" font-weight="600" fill="#2E1F14" direction="rtl">پسته‌ای</text>
+  <text x="904" y="370" text-anchor="end" font-family="&#39;Vazirmatn&#39;, sans-serif" font-size="10.5" fill="#8C7A63" direction="rtl">انگشت‌پیچ · شیرمال کره‌ای</text>
+  <rect x="480" y="210" width="210" height="168" rx="12" fill="#FFFFFF"></rect>
+  <path d="M 480 222 a 12 12 0 0 1 12 -12 h 186 a 12 12 0 0 1 12 12 v 80 h -210 z" fill="#9C2B3B" stroke="rgba(46,31,20,.08)"></path>
+  <text x="676" y="328" text-anchor="end" font-family="&#39;Vazirmatn&#39;, sans-serif" font-size="15" font-weight="700" fill="#2E1F14">#9C2B3B</text>
+  <text x="676" y="350" text-anchor="end" font-family="&#39;Vazirmatn&#39;, sans-serif" font-size="13" font-weight="600" fill="#2E1F14" direction="rtl">اناری</text>
+  <text x="676" y="370" text-anchor="end" font-family="&#39;Vazirmatn&#39;, sans-serif" font-size="10.5" fill="#8C7A63" direction="rtl">لوگو · معجون · کماج درجه یک</text>
+  <rect x="252" y="210" width="210" height="168" rx="12" fill="#FFFFFF"></rect>
+  <path d="M 252 222 a 12 12 0 0 1 12 -12 h 186 a 12 12 0 0 1 12 12 v 80 h -210 z" fill="#F0E6D2" stroke="rgba(46,31,20,.08)"></path>
+  <text x="448" y="328" text-anchor="end" font-family="&#39;Vazirmatn&#39;, sans-serif" font-size="15" font-weight="700" fill="#2E1F14">#F0E6D2</text>
+  <text x="448" y="350" text-anchor="end" font-family="&#39;Vazirmatn&#39;, sans-serif" font-size="13" font-weight="600" fill="#2E1F14" direction="rtl">شنی</text>
+  <text x="448" y="370" text-anchor="end" font-family="&#39;Vazirmatn&#39;, sans-serif" font-size="10.5" fill="#8C7A63" direction="rtl">سطح ثانویه و پس‌زمینه پرنقش</text>
+  <rect x="24" y="210" width="210" height="168" rx="12" fill="#FFFFFF"></rect>
+  <path d="M 24 222 a 12 12 0 0 1 12 -12 h 186 a 12 12 0 0 1 12 12 v 80 h -210 z" fill="#E8D4A2" stroke="rgba(46,31,20,.08)"></path>
+  <text x="220" y="328" text-anchor="end" font-family="&#39;Vazirmatn&#39;, sans-serif" font-size="15" font-weight="700" fill="#2E1F14">#E8D4A2</text>
+  <text x="220" y="350" text-anchor="end" font-family="&#39;Vazirmatn&#39;, sans-serif" font-size="13" font-weight="600" fill="#2E1F14" direction="rtl">طلایی روشن</text>
+  <text x="220" y="370" text-anchor="end" font-family="&#39;Vazirmatn&#39;, sans-serif" font-size="10.5" fill="#8C7A63" direction="rtl">جزئیات و متن روی زمینه تیره</text>
+</svg>

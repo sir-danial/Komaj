@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="720" viewBox="0 0 1040 720">
+  <!-- سبک جایگزین 2c — پرنقش (نمونه: شیرمال زعفرانی، نیم کیلو) — بازتولیدشده از چیدمان flexbox سند برند (خط‌پایه‌ها با مرورگر اندازه‌گیری شده) -->
+  <defs>
+    <pattern id="hatch45" width="36" height="36" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <rect width="4" height="36" fill="#C79A2C" fill-opacity="0.16"></rect>
+    </pattern>
+    <pattern id="hatch135" width="36" height="36" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)">
+      <rect width="4" height="36" fill="#C79A2C" fill-opacity="0.16"></rect>
+    </pattern>
+    <clipPath id="lid"><rect width="1040" height="720" rx="16"></rect></clipPath>
+  </defs>
+  <rect width="1040" height="720" rx="16" fill="#F0E6D2"></rect>
+  <g clip-path="url(#lid)">
+    <rect width="1040" height="720" fill="url(#hatch45)"></rect>
+    <rect width="1040" height="720" fill="url(#hatch135)"></rect>
+  </g>
+  <rect x="186.0" y="92.0" width="668.0" height="536.0" rx="24" fill="#FAF6EE" stroke="#C79A2C" stroke-width="4"></rect>
+  <rect x="415.0" y="177.1" width="56.0" height="2.0" fill="#7A8B3D"></rect>
+  <rect x="569.0" y="177.1" width="56.0" height="2.0" fill="#7A8B3D"></rect>
+  <rect x="-6.00" y="-6.00" width="12.00" height="12.00" fill="#C79A2C" rx="2.0" transform="translate(491.0,178.1) rotate(45)"></rect>
+  <rect x="-9.00" y="-9.00" width="18.00" height="18.00" fill="#9C2B3B" rx="3.0" transform="translate(520.0,178.1) rotate(45)"></rect>
+  <rect x="-6.00" y="-6.00" width="12.00" height="12.00" fill="#C79A2C" rx="2.0" transform="translate(549.0,178.1) rotate(45)"></rect>
+  <text x="520.0" y="324.1" text-anchor="middle" font-family="&#39;Noto Nastaliq Urdu&#39;, serif" font-size="88.0" fill="#2E1F14" font-weight="700" direction="rtl">کماج</text>
+  <text x="520.0" y="375.5" text-anchor="middle" font-family="&#39;Vazirmatn&#39;, sans-serif" font-size="18.0" fill="#8C7A63" letter-spacing="6.30" direction="rtl">سوغات همدان</text>
+  <text x="520.0" y="467.5" text-anchor="middle" font-family="&#39;Noto Nastaliq Urdu&#39;, serif" font-size="46.0" fill="#9C2B3B" direction="rtl">شیرمال مرغوب زعفرانی</text>
+  <text x="520.0" y="509.9" text-anchor="middle" font-family="&#39;Vazirmatn&#39;, sans-serif" font-size="20.0" fill="#6B5B49" direction="rtl">تلفن: ۰۸۱-۳۸۲۵۴۰۰۰</text>
+  <text x="520.0" y="541.9" text-anchor="middle" font-family="&#39;Marcellus&#39;, serif" font-size="22.0" fill="#2E1F14" letter-spacing="1.54">komaj.shop</text>
+  <circle cx="130.0" cy="130.0" r="74" fill="#FAF6EE" stroke="#C79A2C" stroke-width="4"></circle>
+  <text x="130.0" y="124.0" text-anchor="middle" font-family="&#39;Vazirmatn&#39;, sans-serif" font-size="40.0" fill="#2E1F14" font-weight="800" direction="rtl">نیم</text>
+  <text x="130.0" y="159.0" text-anchor="middle" font-family="&#39;Vazirmatn&#39;, sans-serif" font-size="20.0" fill="#8C7A63" direction="rtl">کیلوگرم</text>
+</svg>
