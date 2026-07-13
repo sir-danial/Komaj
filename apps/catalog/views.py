@@ -99,6 +99,6 @@ def search(request):
         "jsonld": [breadcrumb_jsonld(request, breadcrumb)],
         "og": {
             "title": (f"جستجو: {query}" if query else "جستجو") + " — کماج",
-            "description": "جستجو در محصولات کماج — شیرینی سنتی و قوطی‌های اصیل ایرانی.",
+            "description": "جستجو در محصولات کماج — سوغات اصیل همدان.",
         },
     })

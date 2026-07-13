@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="400mm" height="260mm" viewBox="0 0 400 260">
+  
+  <rect width="400" height="260" fill="#FAF6EE"></rect>
+  <rect x="10.59746835443038" y="10.59746835443038" width="378.8050632911392" height="238.80506329113925" rx="4.541772151898734" fill="none" stroke="#C79A2C" stroke-width="1.5139240506329115"></rect>
+  <g>
+    <rect x="134.05346835443038" y="22.011797468354438" width="35.97083544303798" height="0.9991898734177216" fill="#7A8B3D"></rect>
+    <rect x="229.97569620253165" y="22.011797468354438" width="35.97083544303798" height="0.9991898734177216" fill="#7A8B3D"></rect>
+    <rect x="-3.9967594936708863" y="-3.9967594936708863" width="7.993518987341773" height="7.993518987341773" fill="#C79A2C" transform="translate(182.01458227848102,22.511392405063297) rotate(45)"></rect>
+    <rect x="-5.9951392405063295" y="-5.9951392405063295" width="11.990278481012659" height="11.990278481012659" fill="#7A8B3D" transform="translate(200,22.511392405063297) rotate(45)"></rect>
+    <rect x="-3.9967594936708863" y="-3.9967594936708863" width="7.993518987341773" height="7.993518987341773" fill="#C79A2C" transform="translate(217.98541772151898,22.511392405063297) rotate(45)"></rect>
+  </g><text x="200" y="69.44303797468355" text-anchor="middle" dominant-baseline="central" font-family="&#39;Noto Nastaliq Urdu&#39;, serif" font-size="45.41772151898734" font-weight="700" fill="#2E1F14" direction="rtl">کماج</text><text x="200" y="112.58987341772153" text-anchor="middle" dominant-baseline="central" font-family="&#39;Vazirmatn&#39;, sans-serif" font-size="9.083544303797469" letter-spacing="3.027848101265823" fill="#8C7A63" direction="rtl">سوغات همدان</text><text x="200" y="148.16708860759493" text-anchor="middle" dominant-baseline="central" font-family="&#39;Noto Nastaliq Urdu&#39;, serif" font-size="24.222784810126583" fill="#7A8B3D" direction="rtl">شیرمال مرغوب کره‌ای</text><text x="200" y="184.50126582278483" text-anchor="middle" dominant-baseline="central" font-family="&#39;Vazirmatn&#39;, sans-serif" font-size="9.840506329113925" fill="#6B5B49" direction="rtl">تلفن: ۰۸۱-۳۸۲۵۴۰۰۰</text><text x="200" y="211.75189873417725" text-anchor="middle" dominant-baseline="central" font-family="&#39;Vazirmatn&#39;, sans-serif" font-size="9.840506329113925" fill="#6B5B49" direction="rtl">همدان، میدان امام، بازار سنتی</text><text x="200" y="239.75949367088612" text-anchor="middle" dominant-baseline="central" font-family="&#39;Marcellus&#39;, serif" font-size="10.59746835443038" letter-spacing="0.9083544303797468" fill="#2E1F14">komaj.shop</text>
+  <g>
+    <circle cx="49.959493670886076" cy="49.959493670886076" r="30.27848101265823" fill="#FAF6EE" stroke="#7A8B3D" stroke-width="1.5139240506329115"></circle>
+    <text x="49.959493670886076" y="45.41772151898734" text-anchor="middle" dominant-baseline="central" font-family="&#39;Vazirmatn&#39;, sans-serif" font-size="19.68101265822785" font-weight="800" fill="#2E1F14" direction="rtl">۲</text>
+    <text x="49.959493670886076" y="63.58481012658228" text-anchor="middle" dominant-baseline="central" font-family="&#39;Vazirmatn&#39;, sans-serif" font-size="8.326582278481013" fill="#8C7A63" direction="rtl">کیلوگرم</text>
+  </g>
+</svg>

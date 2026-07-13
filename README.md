@@ -171,6 +171,6 @@ python manage.py runserver
   - ⏳ باقی‌مانده: محاسبه دقیق پست پیشتاز، فاکتور PDF (WeasyPrint)، SMS اعلان سفارش، تست E2E، اتصال ArvanCloud، django-unfold
 - **فاز ۲:** Postgres، Redis، Celery، CDN، بین‌الملل (NOWPayments)
 
-اپ‌ها: `catalog`، `cart`، `orders`، `payments`، `coupons`، `accounts`. تست‌ها: `pytest` (۱۱۱ تست). داده نمونه: `python manage.py seed_catalog`.
+اپ‌ها: `catalog`، `cart`، `orders`، `payments`، `coupons`، `accounts`. تست‌ها: `pytest` (۱۱۱ تست). کاتالوگ واقعی (۷ محصول برند + تصاویر): `python manage.py seed_catalog` — idempotent؛ محصولات خارج از لاین‌آپ را غیرفعال می‌کند. اسناد برند در [docs/branding/](docs/branding/).
 
 پلن هفته‌به‌هفته در [docs/research-report.md §۱۱](docs/research-report.md).

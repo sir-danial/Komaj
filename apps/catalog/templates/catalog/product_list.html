@@ -2,7 +2,7 @@
 {% load komaj_extras %}
 
 {% block title %}{% if category %}{{ category.name }}{% else %}همه محصولات{% endif %} — کماج{% endblock %}
-{% block description %}{% if category and category.description %}{{ category.description }}{% else %}فهرست محصولات کماج — شیرینی کیلویی دست‌ساز و قوطی‌های مکمل سنتی.{% endif %}{% endblock %}
+{% block description %}{% if category and category.description %}{{ category.description }}{% else %}فهرست محصولات کماج — کماج، شیرمال، حلوا زرده و معجون اصیل همدان.{% endif %}{% endblock %}
 
 {% block content %}
 {% include "components/breadcrumb.html" with items=breadcrumb %}

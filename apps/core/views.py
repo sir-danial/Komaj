@@ -17,36 +17,36 @@ def _sample_products():
     """
     return [
         {
-            "name": "کلمپه کرمانی دست‌ساز",
-            "href": "/p/kolompeh/",
+            "name": "کماج درجه یک",
+            "href": "/p/komaj/",
             "image_url": "",
-            "price": Decimal("180000"),
-            "unit_label": "کیلوگرم",
-            "weight_badge": "۰.۵kg+",
-            "is_fresh": True,
-        },
-        {
-            "name": "باقلوا خانگی با زعفران",
-            "href": "/p/baklava/",
-            "image_url": "",
-            "price": Decimal("220000"),
+            "price": Decimal("250000"),
             "unit_label": "کیلوگرم",
             "weight_badge": "۱kg+",
             "is_fresh": True,
         },
         {
-            "name": "شکلات فندقی — قوطی ۲۰۰ گرمی",
-            "href": "/p/hazelnut-spread-200/",
+            "name": "شیرمال مرغوب زعفرانی",
+            "href": "/p/shirmal-zafarani/",
             "image_url": "",
-            "price": Decimal("120000"),
-            "unit_label": "عدد",
-            "old_price": Decimal("150000"),
+            "price": Decimal("260000"),
+            "unit_label": "کیلوگرم",
+            "weight_badge": "۰.۵kg+",
+            "is_fresh": True,
         },
         {
-            "name": "ارده سنتی — قوطی ۶۰۰ گرمی",
-            "href": "/p/ardeh-600/",
+            "name": "حلوا زرده اعلا",
+            "href": "/p/halva-zarde/",
             "image_url": "",
-            "price": Decimal("280000"),
+            "price": Decimal("350000"),
+            "unit_label": "عدد",
+            "old_price": Decimal("390000"),
+        },
+        {
+            "name": "معجون مخصوص",
+            "href": "/p/majoon/",
+            "image_url": "",
+            "price": Decimal("400000"),
             "unit_label": "عدد",
         },
     ]
@@ -67,7 +67,16 @@ def home(request):
             "@context": "https://schema.org",
             "@type": "Organization",
             "name": "کماج",
+            "description": "سوغات اصیل همدان — کماج، شیرمال، حلوا زرده و معجون",
             "url": base_url + "/",
+            "logo": base_url + "/static/img/logo-square.png",
+            "telephone": "+98-81-38254000",
+            "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "همدان",
+                "streetAddress": "میدان امام، بازار سنتی",
+                "addressCountry": "IR",
+            },
         },
         {
             "@context": "https://schema.org",
@@ -86,9 +95,10 @@ def home(request):
         "cart_count": 0,
         "jsonld": jsonld,
         "og": {
-            "title": "کماج — شیرینی سنتی و قوطی‌های اصیل ایرانی",
-            "description": "فروشگاه آنلاین کماج — شیرینی کیلویی دست‌ساز و قوطی‌های مکمل سنتی ایرانی، ارسال به سراسر ایران.",
+            "title": "کماج — سوغات اصیل همدان",
+            "description": "فروشگاه آنلاین کماج — کماج درجه یک، شیرمال، حلوا زرده اعلا و معجون مخصوص همدان، ارسال به سراسر ایران.",
             "url": base_url + "/",
+            "image": base_url + "/static/img/logo-square.png",
         },
     })
 
@@ -117,8 +127,8 @@ def styleguide(request):
     ]
     breadcrumb = [
         {"href": "/", "label": "خانه"},
-        {"href": "/c/sweets/", "label": "شیرینی کیلویی"},
-        {"href": "#", "label": "کلمپه کرمانی"},
+        {"href": "/c/sweets/", "label": "کماج و شیرمال"},
+        {"href": "#", "label": "کماج درجه یک"},
     ]
     return render(request, "core/styleguide.html", {
         "swatches": swatches,
