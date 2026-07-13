@@ -1,6 +1,13 @@
+from pathlib import Path
+
 from .base import *  # noqa: F401,F403
+from .base import env
 
 DEBUG = False
+
+# media lives on the persistent volume (same disk as SQLite) so uploads
+# survive redeploys; overridable once ArvanCloud S3 takes over
+MEDIA_ROOT = Path(env("MEDIA_ROOT", default="/data/media"))
 
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 SECURE_SSL_REDIRECT = True

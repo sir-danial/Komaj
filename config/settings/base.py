@@ -124,7 +124,7 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_DIRS = [BASE_DIR / "static"] if (BASE_DIR / "static").exists() else []
 
 MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "media"
+MEDIA_ROOT = Path(env("MEDIA_ROOT", default=str(BASE_DIR / "media")))
 
 # --- Storage (env toggle between local disk and ArvanCloud S3) ---
 USE_S3_STORAGE = env("USE_S3_STORAGE")

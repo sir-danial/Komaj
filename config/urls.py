@@ -20,3 +20,13 @@ urlpatterns = [
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+elif not settings.USE_S3_STORAGE:
+    # no S3 yet: gunicorn serves the handful of admin-uploaded product images
+    # straight from the persistent volume (fine at this traffic level)
+    from django.urls import re_path
+    from django.views.static import serve
+
+    def _serve_media(request, path):
+        return serve(request, path, document_root=settings.MEDIA_ROOT)
+
+    urlpatterns += [re_path(r"^media/(?P<path>.*)$", _serve_media)]
