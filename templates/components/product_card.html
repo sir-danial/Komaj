@@ -4,12 +4,13 @@ Product card.
 Params:
   product (dict-like)
     .name          *
+    .subtitle        — ویژگی فرعی، ریزتر زیر نام (مثل «روغن حیوانی»)
     .href          *
     .image_url     *
     .image_alt
-    .price         * (Decimal; قیمت به تومان)
-    .unit_label      — «کیلوگرم» | «عدد» | «۲۰۰ گرم» ...
-    .weight_badge    — متن badge (مثل «۰.۵kg+»)
+    .price         * (Decimal; قیمت هر بسته به تومان)
+    .unit_label      — «جعبه» | «عدد»
+    .weight_badge    — متن badge اندازه بسته (مثل «جعبه نیم کیلویی»)
     .is_fresh (bool) — نشان «تازه پخت»
     .old_price       — برای حالت sale (تومان)
 {% endcomment %}
@@ -32,6 +33,9 @@ Params:
         <h3 class="text-h3 text-espresso line-clamp-2">
             <a href="{{ product.href }}" class="hover:text-saffron">{{ product.name }}</a>
         </h3>
+        {% if product.subtitle %}
+            <p class="text-body-sm text-espresso/60 text-end">{{ product.subtitle }}</p>
+        {% endif %}
         <div class="flex items-baseline gap-2">
             {% if product.old_price %}
                 <span class="price-old text-body-sm">{{ product.old_price|toman }}</span>

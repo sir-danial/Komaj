@@ -18,7 +18,7 @@ def products():
     Product.objects.create(name="محصول غیرفعال", slug="inactive", category=sweets, is_active=False)
     for p, price in ((kol, "180000"), (ard, "280000")):
         ProductVariant.objects.create(product=p, sku=f"{p.slug}-v", unit_price=Decimal(price),
-                                      min_order_qty=1, qty_step=1, stock_qty=10)
+                                      min_order_qty=1, stock_qty=10)
     return sweets, jars
 
 

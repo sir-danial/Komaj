@@ -33,8 +33,8 @@ def test_get_gateway_uses_zarinpal_when_configured(settings):
 
 
 def test_amount_rial_conversion(pending_order):
-    # 339,300 Toman -> 3,393,000 Rial
-    assert pending_order.amount_rial == 3393000
+    # 437,400 Toman -> 4,374,000 Rial
+    assert pending_order.amount_rial == 4374000
 
 
 def test_payment_start_redirects_to_mock(client, pending_order):
@@ -60,7 +60,7 @@ def test_full_happy_path_mock(client, pending_order, variant):
     assert pending_order.status == Order.PAID
     assert pending_order.paid_at is not None
     assert Payment.objects.get(order=pending_order).status == Payment.PAID
-    assert variant.stock_qty == Decimal("38.5")  # 40 - 1.5
+    assert variant.stock_qty == 38  # 40 - 2
 
 
 def test_callback_cancelled(client, pending_order):
@@ -80,7 +80,7 @@ def test_double_callback_is_idempotent(client, pending_order, variant):
     # replay the callback (e.g. user refreshes) — stock must NOT drop twice
     client.get("/payment/verify/", {"Authority": authority, "Status": "OK"})
     variant.refresh_from_db()
-    assert variant.stock_qty == Decimal("38.5")  # decremented exactly once
+    assert variant.stock_qty == 38  # decremented exactly once
 
 
 def test_start_already_paid_order_redirects(client, pending_order):

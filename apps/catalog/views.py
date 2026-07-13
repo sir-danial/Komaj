@@ -66,7 +66,7 @@ def product_detail(request, slug):
         "jsonld": [product_jsonld(request, product), breadcrumb_jsonld(request, breadcrumb)],
         "og": {
             "type": "product",
-            "title": product.name,
+            "title": product.full_name,
             "description": (product.description or product.name)[:200],
             "image": request.build_absolute_uri(product.primary_image.url) if product.primary_image else "",
             "url": request.build_absolute_uri(product.get_absolute_url()),
@@ -82,6 +82,7 @@ def search(request):
             Product.objects.filter(is_active=True)
             .filter(
                 Q(name__icontains=query)
+                | Q(subtitle__icontains=query)
                 | Q(description__icontains=query)
                 | Q(origin__icontains=query)
                 | Q(category__name__icontains=query)

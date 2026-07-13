@@ -72,7 +72,7 @@ def create_order_from_cart(cart, data, *, user=None, discount=Decimal("0")):
         OrderItem(
             order=order,
             variant=i["variant"],
-            product_name=i["variant"].product.name,
+            product_name=i["variant"].product.full_name,
             variant_label=i["variant"].label,
             unit_label=i["variant"].unit_label,
             quantity=i["quantity"],

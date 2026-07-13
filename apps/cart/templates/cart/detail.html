@@ -32,7 +32,9 @@
                     <div class="flex items-start justify-between gap-3">
                         <div class="min-w-0">
                             <a href="{{ item.variant.product.get_absolute_url }}" class="text-h3 hover:text-saffron line-clamp-1">{{ item.variant.product.name }}</a>
-                            {% if item.variant.label %}<p class="text-body-sm text-espresso/60">{{ item.variant.label }}</p>{% endif %}
+                            {% if item.variant.product.subtitle or item.variant.label %}
+                                <p class="text-body-sm text-espresso/60">{% if item.variant.product.subtitle %}{{ item.variant.product.subtitle }}{% if item.variant.label %} — {% endif %}{% endif %}{{ item.variant.label }}</p>
+                            {% endif %}
                             <p class="text-body-sm text-espresso/60 tabular">{{ item.unit_price|toman }} تومان / {{ item.variant.unit_label }}</p>
                         </div>
                         <form method="post" action="{% url 'cart:remove' %}">
@@ -47,9 +49,10 @@
                             {% csrf_token %}
                             <input type="hidden" name="variant_id" value="{{ item.variant.pk }}">
                             <button type="button" class="btn btn-secondary btn-sm px-3 js-minus" aria-label="کاهش">−</button>
-                            <input type="number" name="quantity" class="field btn-sm text-center w-20 tabular js-qty"
-                                   value="{{ item.quantity|stringformat:'s' }}"
-                                   min="{{ item.variant.min_order_qty }}" step="{{ item.variant.qty_step }}" inputmode="decimal">
+                            <input type="text" name="quantity" class="field btn-sm text-center w-20 tabular js-qty"
+                                   value="{{ item.quantity|fa }}"
+                                   data-min="{{ item.variant.min_order_qty }}"
+                                   inputmode="numeric" pattern="[0-9۰-۹]*">
                             <button type="button" class="btn btn-secondary btn-sm px-3 js-plus" aria-label="افزایش">+</button>
                             <button type="submit" class="btn btn-ghost btn-sm js-update">به‌روزرسانی</button>
                         </form>
@@ -102,17 +105,19 @@
 
 {% block body_extra %}
 <script>
+// تعداد: عدد صحیح، نمایش با ارقام فارسی
+const FA = '۰۱۲۳۴۵۶۷۸۹';
+const faDigits = (s) => String(s).replace(/[0-9]/g, d => FA[d]);
+const toInt = (s) => parseInt(String(s).replace(/[۰-۹]/g, d => FA.indexOf(d)), 10) || 0;
 document.querySelectorAll('.qty-stepper').forEach(function (form) {
   const input = form.querySelector('.js-qty');
-  const step = parseFloat(input.step) || 1;
-  const min = parseFloat(input.min) || step;
-  const fmt = (n) => parseFloat(n.toFixed(2)).toString();
+  const min = toInt(input.dataset.min) || 1;
   form.querySelector('.js-plus').addEventListener('click', () => {
-    input.value = fmt((parseFloat(input.value) || 0) + step); form.submit();
+    input.value = faDigits(toInt(input.value) + 1); form.submit();
   });
   form.querySelector('.js-minus').addEventListener('click', () => {
-    const next = (parseFloat(input.value) || 0) - step;
-    if (next >= min) { input.value = fmt(next); form.submit(); }
+    const next = toInt(input.value) - 1;
+    if (next >= min) { input.value = faDigits(next); form.submit(); }
   });
 });
 </script>

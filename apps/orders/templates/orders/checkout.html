@@ -81,7 +81,7 @@
                 <ul class="space-y-1.5 text-body-sm">
                     {% for item in items %}
                     <li class="flex justify-between gap-2">
-                        <span class="text-espresso/80 line-clamp-1">{{ item.variant.product.name }} × {{ item.quantity|kg }}</span>
+                        <span class="text-espresso/80 line-clamp-1">{{ item.variant.product.full_name }} × {{ item.quantity|fa }}</span>
                         <span class="tabular shrink-0">{{ item.line_total|toman }}</span>
                     </li>
                     {% endfor %}

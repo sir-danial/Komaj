@@ -9,12 +9,12 @@ pytestmark = pytest.mark.django_db
 
 @pytest.fixture
 def product():
-    cat = Category.objects.create(name="شیرینی کیلویی", slug="sweets")
+    cat = Category.objects.create(name="شیرینی جعبه‌ای", slug="sweets")
     p = Product.objects.create(name="کلمپه", slug="kolompeh", category=cat,
                                sale_unit=Product.WEIGHT, is_active=True, is_featured=True)
-    ProductVariant.objects.create(product=p, sku="KOL-KG", is_weighted=True,
-                                  unit_price=Decimal("180000"), min_order_qty=Decimal("0.5"),
-                                  qty_step=Decimal("0.5"), stock_qty=Decimal("40"))
+    ProductVariant.objects.create(product=p, sku="KOL-1KG", label="جعبه یک کیلویی",
+                                  weight_grams=1000, unit_price=Decimal("180000"),
+                                  min_order_qty=1, stock_qty=40)
     return p
 
 

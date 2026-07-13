@@ -20,17 +20,17 @@ class ProductVariantInline(admin.TabularInline):
     model = ProductVariant
     extra = 1
     fields = [
-        "sku", "label", "is_weighted", "unit_price",
-        "min_order_qty", "qty_step", "stock_qty", "weight_grams", "is_active",
+        "sku", "label", "weight_grams", "unit_price",
+        "min_order_qty", "stock_qty", "is_active",
     ]
 
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ["name", "category", "sale_unit", "is_active", "is_featured", "created_at"]
+    list_display = ["name", "subtitle", "category", "sale_unit", "is_active", "is_featured", "created_at"]
     list_filter = ["category", "sale_unit", "is_active", "is_featured"]
     list_editable = ["is_active", "is_featured"]
-    search_fields = ["name", "description", "origin"]
+    search_fields = ["name", "subtitle", "description", "origin"]
     prepopulated_fields = {"slug": ("name",)}
     inlines = [ProductImageInline, ProductVariantInline]
     autocomplete_fields = ["category"]
@@ -38,7 +38,7 @@ class ProductAdmin(admin.ModelAdmin):
 
 @admin.register(ProductVariant)
 class ProductVariantAdmin(admin.ModelAdmin):
-    list_display = ["sku", "product", "label", "is_weighted", "unit_price", "stock_qty", "is_active"]
-    list_filter = ["is_weighted", "is_active"]
+    list_display = ["sku", "product", "label", "weight_grams", "unit_price", "stock_qty", "is_active"]
+    list_filter = ["is_active", "product__sale_unit"]
     search_fields = ["sku", "product__name", "label"]
     autocomplete_fields = ["product"]

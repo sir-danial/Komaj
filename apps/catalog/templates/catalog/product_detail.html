@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load komaj_extras %}
 
-{% block title %}{{ product.name }} — کماج{% endblock %}
+{% block title %}{{ product.full_name }} — کماج{% endblock %}
 {% block description %}{{ product.description|striptags|truncatechars:155 }}{% endblock %}
 
 {% block content %}
@@ -36,7 +36,12 @@
             {% if product.origin %}<span class="badge badge-sand">خاستگاه: {{ product.origin }}</span>{% endif %}
         </div>
 
-        <h1 class="text-h1 text-espresso">{{ product.name }}</h1>
+        <div>
+            <h1 class="text-h1 text-espresso">{{ product.name }}</h1>
+            {% if product.subtitle %}
+                <p class="text-body text-espresso/60 text-end mt-1">{{ product.subtitle }}</p>
+            {% endif %}
+        </div>
 
         {% if variants %}
         <form method="post" action="/cart/add/" class="space-y-5" id="add-to-cart">
@@ -44,13 +49,13 @@
 
             {% if variants|length > 1 %}
             <fieldset class="space-y-2">
-                <legend class="label">انتخاب نوع</legend>
+                <legend class="label">انتخاب {% if product.is_boxed %}جعبه{% else %}نوع{% endif %}</legend>
                 <div class="flex flex-wrap gap-2">
                     {% for v in variants %}
                     <label class="cursor-pointer">
                         <input type="radio" name="variant_id" value="{{ v.pk }}" class="peer sr-only"
                                data-price="{{ v.unit_price }}" data-unit="{{ v.unit_label }}"
-                               data-min="{{ v.min_order_qty }}" data-step="{{ v.qty_step }}"
+                               data-min="{{ v.min_order_qty }}"
                                {% if forloop.first %}checked{% endif %}
                                {% if not v.in_stock %}disabled{% endif %}>
                         <span class="badge badge-sand peer-checked:badge-saffron peer-disabled:opacity-40 px-4 py-2">
@@ -64,7 +69,7 @@
                 {% with v=variants.0 %}
                 <input type="hidden" name="variant_id" value="{{ v.pk }}"
                        data-price="{{ v.unit_price }}" data-unit="{{ v.unit_label }}"
-                       data-min="{{ v.min_order_qty }}" data-step="{{ v.qty_step }}">
+                       data-min="{{ v.min_order_qty }}">
                 {% endwith %}
             {% endif %}
 
@@ -74,19 +79,15 @@
             </div>
 
             <div class="space-y-1.5">
-                <label for="quantity" class="label">مقدار (<span id="qty-unit">{{ variants.0.unit_label }}</span>)</label>
+                <label for="quantity" class="label">تعداد (<span id="qty-unit">{{ variants.0.unit_label }}</span>)</label>
                 <div class="flex items-stretch gap-2 w-fit">
                     <button type="button" class="btn btn-secondary px-4" id="qty-minus" aria-label="کاهش">−</button>
-                    <input type="number" id="quantity" name="quantity"
+                    <input type="text" id="quantity" name="quantity"
                            class="field text-center w-28 tabular"
-                           value="{{ variants.0.min_order_qty }}"
-                           min="{{ variants.0.min_order_qty }}"
-                           step="{{ variants.0.qty_step }}" inputmode="decimal" required>
+                           value="{{ variants.0.min_order_qty|fa }}"
+                           inputmode="numeric" pattern="[0-9۰-۹]*" required>
                     <button type="button" class="btn btn-secondary px-4" id="qty-plus" aria-label="افزایش">+</button>
                 </div>
-                <p class="helper" id="qty-help">
-                    حداقل {{ variants.0.min_order_qty|kg }} — گام {{ variants.0.qty_step|kg }} {{ variants.0.unit_label }}
-                </p>
             </div>
 
             <div class="flex items-baseline gap-2 border-t border-sand pt-4">
@@ -132,48 +133,52 @@
   const unitPriceEl = document.getElementById('unit-price');
   const unitLabelEl = document.getElementById('unit-label');
   const qtyUnitEl = document.getElementById('qty-unit');
-  const qtyHelp = document.getElementById('qty-help');
 
-  const faDigits = (s) => String(s).replace(/[0-9]/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]);
+  // تعداد همیشه عدد صحیح است و با ارقام فارسی نمایش داده می‌شود
+  const FA = '۰۱۲۳۴۵۶۷۸۹';
+  const faDigits = (s) => String(s).replace(/[0-9]/g, d => FA[d]);
+  const toInt = (s) => parseInt(String(s).replace(/[۰-۹]/g, d => FA.indexOf(d)), 10) || 0;
   const groupFa = (n) => faDigits(Math.round(n).toLocaleString('en-US')).replace(/,/g, '٬');
-  const trim = (s) => parseFloat(s).toString();
 
   function selectedInput() {
     return form.querySelector('input[name="variant_id"]:checked')
         || form.querySelector('input[name="variant_id"]');
   }
 
+  function minQty() {
+    const v = selectedInput();
+    return v ? (toInt(v.dataset.min) || 1) : 1;
+  }
+
   function applyVariant() {
     const v = selectedInput();
     if (!v) return;
-    const min = v.dataset.min, step = v.dataset.step, unit = v.dataset.unit;
-    qty.min = min; qty.step = step;
-    if (parseFloat(qty.value) < parseFloat(min)) qty.value = min;
+    if (toInt(qty.value) < minQty()) qty.value = faDigits(minQty());
     if (unitPriceEl) unitPriceEl.textContent = groupFa(v.dataset.price);
-    [unitLabelEl, qtyUnitEl].forEach(el => { if (el) el.textContent = unit; });
-    if (qtyHelp) qtyHelp.textContent = `حداقل ${faDigits(trim(min))} — گام ${faDigits(trim(step))} ${unit}`;
+    [unitLabelEl, qtyUnitEl].forEach(el => { if (el) el.textContent = v.dataset.unit; });
     recompute();
   }
 
   function recompute() {
     const v = selectedInput();
     if (!v) return;
-    const total = parseFloat(v.dataset.price) * (parseFloat(qty.value) || 0);
+    const total = parseInt(v.dataset.price, 10) * toInt(qty.value);
     lineTotal.textContent = total > 0 ? groupFa(total) : '—';
   }
 
   document.getElementById('qty-plus')?.addEventListener('click', () => {
-    qty.value = (parseFloat(qty.value || 0) + parseFloat(qty.step || 1)).toFixed(2).replace(/\.?0+$/, '');
+    qty.value = faDigits(toInt(qty.value) + 1);
     recompute();
   });
   document.getElementById('qty-minus')?.addEventListener('click', () => {
-    const next = parseFloat(qty.value || 0) - parseFloat(qty.step || 1);
-    if (next >= parseFloat(qty.min || 0)) {
-      qty.value = next.toFixed(2).replace(/\.?0+$/, '');
-      recompute();
-    }
+    const next = toInt(qty.value) - 1;
+    if (next >= minQty()) { qty.value = faDigits(next); recompute(); }
   });
   qty.addEventListener('input', recompute);
+  qty.addEventListener('blur', () => {
+    qty.value = faDigits(Math.max(toInt(qty.value), minQty()));
+    recompute();
+  });
   form.querySelectorAll('input[name="variant_id"]').forEach(el => el.addEventListener('change', applyVariant));
 
   applyVariant();

@@ -17,8 +17,8 @@ def variant():
     cat = Category.objects.create(name="شیرینی", slug="sweets")
     p = Product.objects.create(name="کلمپه", slug="kolompeh", category=cat, sale_unit=Product.WEIGHT)
     return ProductVariant.objects.create(
-        product=p, sku="KOL-KG", is_weighted=True, unit_price=Decimal("180000"),
-        min_order_qty=Decimal("0.5"), qty_step=Decimal("0.5"), stock_qty=Decimal("40"),
+        product=p, sku="KOL-1KG", label="جعبه یک کیلویی", weight_grams=1000,
+        unit_price=Decimal("180000"), min_order_qty=1, stock_qty=40,
     )
 
 
@@ -118,6 +118,6 @@ def test_coupon_dropped_when_below_minimum_after_removal(client, variant):
     Coupon.objects.create(code="MIN200", discount_type=Coupon.PERCENT, value=10,
                           min_order_amount=Decimal("200000"))
     client.post("/coupon/apply/", {"code": "MIN200"}, follow=True)
-    resp = client.post("/cart/update/", {"variant_id": variant.pk, "quantity": "0.5"}, follow=True)  # 90,000
+    resp = client.post("/cart/update/", {"variant_id": variant.pk, "quantity": "1"}, follow=True)  # 180,000
     # coupon silently dropped; code no longer shown
     assert "MIN200" not in resp.content.decode()

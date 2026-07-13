@@ -120,7 +120,7 @@ class OrderItem(models.Model):
     product_name = models.CharField(max_length=200)
     variant_label = models.CharField(max_length=100, blank=True)
     unit_label = models.CharField(max_length=20)
-    quantity = models.DecimalField(max_digits=8, decimal_places=2)
+    quantity = models.PositiveIntegerField()
     unit_price = models.DecimalField(max_digits=12, decimal_places=0)
     line_total = models.DecimalField(max_digits=14, decimal_places=0)
 

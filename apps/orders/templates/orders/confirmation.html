@@ -31,7 +31,7 @@
         <ul class="divide-y divide-sand">
             {% for item in order.items.all %}
             <li class="flex justify-between gap-3 py-2">
-                <span class="text-body">{{ item.display_name }} <span class="text-espresso/50 text-body-sm">× {{ item.quantity|kg }} {{ item.unit_label }}</span></span>
+                <span class="text-body">{{ item.display_name }} <span class="text-espresso/50 text-body-sm">× {{ item.quantity|fa }} {{ item.unit_label }}</span></span>
                 <span class="tabular shrink-0">{{ item.line_total|toman }} تومان</span>
             </li>
             {% endfor %}

@@ -2,16 +2,17 @@
 
 Stored in ``request.session[CART_SESSION_KEY]`` as::
 
-    { "<variant_id>": {"quantity": "1.5", "unit_price": "180000"} }
+    { "<variant_id>": {"quantity": 2, "unit_price": "180000"} }
 
-Quantities and prices are kept as strings in the session (JSON-safe) and exposed
-as ``Decimal`` through the iterator. ``unit_price`` is a snapshot taken when the
-item was added/updated (per research-report: lock the price the customer saw);
-checkout re-validates against the live price/stock before payment.
+Quantities are whole numbers of packages (``int``); prices are kept as strings
+in the session (JSON-safe) and exposed as ``Decimal`` through the iterator.
+``unit_price`` is a snapshot taken when the item was added/updated (per
+research-report: lock the price the customer saw); checkout re-validates
+against the live price/stock before payment.
 """
 from decimal import Decimal
 
-from apps.catalog.models import ProductVariant
+from apps.catalog.models import ProductVariant, parse_quantity
 
 from .totals import compute_totals
 
@@ -28,17 +29,18 @@ class Cart:
 
     # --- mutation -------------------------------------------------------
     def add(self, variant, quantity, *, replace=False):
-        """Add ``quantity`` of ``variant``. Validates against min/step/stock.
+        """Add ``quantity`` packages of ``variant``. Validates min/stock and
+        that the quantity is a whole number.
 
         ``replace=True`` sets the absolute quantity (used by the cart page);
         otherwise the quantity is added to whatever is already there.
         """
         key = str(variant.pk)
-        current = Decimal(self.cart[key]["quantity"]) if key in self.cart else Decimal("0")
-        new_qty = quantity if replace else current + Decimal(str(quantity))
-        # raises ValidationError if invalid
+        current = int(self.cart[key]["quantity"]) if key in self.cart else 0
+        new_qty = parse_quantity(quantity) + (0 if replace else current)
+        # raises ValidationError if invalid (fractional, below min, over stock)
         new_qty = variant.validate_quantity(new_qty)
-        self.cart[key] = {"quantity": str(new_qty), "unit_price": str(variant.unit_price)}
+        self.cart[key] = {"quantity": new_qty, "unit_price": str(variant.unit_price)}
         self.save()
 
     def remove(self, variant_id):
@@ -72,13 +74,17 @@ class Cart:
             if variant is None:
                 stale.append(key)  # deleted or deactivated — drop it
                 continue
-            quantity = Decimal(item["quantity"])
+            try:
+                quantity = int(item["quantity"])
+            except (TypeError, ValueError):
+                stale.append(key)  # fractional leftover from pre-integer carts
+                continue
             unit_price = Decimal(item["unit_price"])
             yield {
                 "variant": variant,
                 "quantity": quantity,
                 "unit_price": unit_price,
-                "line_total": (unit_price * quantity).quantize(Decimal("1")),
+                "line_total": unit_price * quantity,
             }
         if stale:
             for key in stale:

@@ -1,5 +1,3 @@
-from decimal import Decimal, InvalidOperation
-
 from django.contrib import messages
 from django.core.exceptions import ValidationError
 from django.shortcuts import get_object_or_404, redirect, render
@@ -23,13 +21,6 @@ def cart_detail(request):
     })
 
 
-def _parse_quantity(raw):
-    try:
-        return Decimal(str(raw).replace("٫", ".").replace("،", "").strip())
-    except (InvalidOperation, AttributeError, TypeError):
-        raise ValidationError("مقدار نامعتبر است.")
-
-
 @require_POST
 def cart_add(request):
     variant = get_object_or_404(
@@ -37,9 +28,8 @@ def cart_add(request):
         pk=request.POST.get("variant_id"), is_active=True,
     )
     try:
-        quantity = _parse_quantity(request.POST.get("quantity"))
         cart = Cart(request)
-        cart.add(variant, quantity)
+        cart.add(variant, request.POST.get("quantity"))
     except ValidationError as exc:
         messages.error(request, exc.messages[0])
         return redirect(variant.product.get_absolute_url())
@@ -50,10 +40,12 @@ def cart_add(request):
 
 @require_POST
 def cart_update(request):
-    variant = get_object_or_404(ProductVariant, pk=request.POST.get("variant_id"), is_active=True)
+    variant = get_object_or_404(
+        ProductVariant.objects.select_related("product"),
+        pk=request.POST.get("variant_id"), is_active=True,
+    )
     try:
-        quantity = _parse_quantity(request.POST.get("quantity"))
-        Cart(request).add(variant, quantity, replace=True)
+        Cart(request).add(variant, request.POST.get("quantity"), replace=True)
     except ValidationError as exc:
         messages.error(request, exc.messages[0])
     return redirect("cart:detail")

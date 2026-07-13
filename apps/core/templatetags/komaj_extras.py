@@ -39,18 +39,3 @@ def format_toman(value):
     whole = int(amount)
     grouped = f"{whole:,}".replace(",", "٬")
     return mark_safe(grouped.translate(_EN_TO_FA))
-
-
-@register.filter(name="kg")
-def format_kg(value):
-    if value is None:
-        return ""
-    try:
-        amount = Decimal(value)
-    except (ValueError, TypeError):
-        return str(value)
-    if amount == amount.to_integral_value():
-        text = f"{int(amount)}"
-    else:
-        text = f"{amount.normalize():f}".rstrip("0").rstrip(".")
-    return text.replace(".", "٫").translate(_EN_TO_FA)

@@ -3,19 +3,6 @@
 Keeps templates dumb and views thin by adapting models into the dict shape the
 shared ``components/product_card.html`` expects.
 """
-_EN_TO_FA = str.maketrans("0123456789", "۰۱۲۳۴۵۶۷۸۹")
-
-
-def _fa(value):
-    return str(value).translate(_EN_TO_FA)
-
-
-def _trim(decimal_value):
-    """'0.50' -> '0.5', '1.00' -> '1' for tidy badges."""
-    text = format(decimal_value.normalize(), "f")
-    return text
-
-
 def _abs(request, path):
     return request.build_absolute_uri(path) if request else path
 
@@ -47,7 +34,7 @@ def product_jsonld(request, product):
     data = {
         "@context": "https://schema.org",
         "@type": "Product",
-        "name": product.name,
+        "name": product.full_name,
         "url": _abs(request, product.get_absolute_url()),
         "description": (product.description or product.name)[:500],
         "category": product.category.name,
@@ -80,15 +67,15 @@ def product_card_context(product):
     variant = product.default_variant
     image = product.primary_image
 
-    weight_badge = None
-    if variant and variant.is_weighted:
-        weight_badge = f"{_fa(_trim(variant.min_order_qty))}kg+"
+    # package-size badge, e.g. «جعبه نیم کیلویی» / «ظرف ۴۵۰ گرمی»
+    weight_badge = variant.label if variant and variant.label else None
 
     return {
         "name": product.name,
+        "subtitle": product.subtitle,
         "href": product.get_absolute_url(),
         "image_url": image.url if image else "",
-        "image_alt": product.name,
+        "image_alt": product.full_name,
         "price": variant.unit_price if variant else None,
         "unit_label": variant.unit_label if variant else "",
         "weight_badge": weight_badge,
