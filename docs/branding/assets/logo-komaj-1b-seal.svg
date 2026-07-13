@@ -8,5 +8,5 @@
   <rect x="-6.00" y="-6.00" width="12.00" height="12.00" fill="#C79A2C" rx="2.0" transform="translate(360.0,218.9) rotate(45)"></rect>
   <rect x="-6.00" y="-6.00" width="12.00" height="12.00" fill="#C79A2C" rx="2.0" transform="translate(384.0,218.9) rotate(45)"></rect>
   <text x="360.0" y="433.9" text-anchor="middle" font-family="&#39;Noto Nastaliq Urdu&#39;, serif" font-size="128.0" fill="#FAF6EE" font-weight="700" direction="rtl">کماج</text>
-  <text x="360.0" y="495.1" text-anchor="middle" font-family="&#39;Vazirmatn&#39;, sans-serif" font-size="22.0" fill="#E8D4A2" letter-spacing="6.60" direction="rtl">سوغات همدان</text>
+  <text x="360.0" y="495.1" text-anchor="middle" font-family="&#39;Vazirmatn&#39;, sans-serif" font-size="22.0" fill="#E8D4A2" direction="rtl">سوغات همدان</text>
 </svg>

@@ -3,5 +3,5 @@
   <!-- گزینه 1a — تایپوگرافی خالص — بازتولیدشده از چیدمان flexbox سند برند (خط‌پایه‌ها با مرورگر اندازه‌گیری شده) -->
   <text x="360.0" y="444.1" text-anchor="middle" font-family="&#39;Noto Nastaliq Urdu&#39;, serif" font-size="192.0" fill="#2E1F14" font-weight="700" direction="rtl">کماج</text>
   <rect x="296.0" y="508.9" width="128.0" height="6.0" fill="#C79A2C" rx="3.0"></rect>
-  <text x="360.0" y="569.9" text-anchor="middle" font-family="&#39;Vazirmatn&#39;, sans-serif" font-size="26.0" fill="#8C7A63" font-weight="500" letter-spacing="9.10" direction="rtl">سوغات همدان</text>
+  <text x="360.0" y="569.9" text-anchor="middle" font-family="&#39;Vazirmatn&#39;, sans-serif" font-size="26.0" fill="#8C7A63" font-weight="500" direction="rtl">سوغات همدان</text>
 </svg>

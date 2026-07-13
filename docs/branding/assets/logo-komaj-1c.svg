@@ -7,5 +7,5 @@
   <rect x="-12.00" y="-12.00" width="24.00" height="24.00" fill="#9C2B3B" rx="4.0" transform="translate(360.0,166.3) rotate(45)"></rect>
   <rect x="-9.00" y="-9.00" width="18.00" height="18.00" fill="#C79A2C" rx="3.0" transform="translate(401.0,166.3) rotate(45)"></rect>
   <text x="360.0" y="472.3" text-anchor="middle" font-family="&#39;Noto Nastaliq Urdu&#39;, serif" font-size="176.0" fill="#9C2B3B" font-weight="700" direction="rtl">کماج</text>
-  <text x="360.0" y="551.7" text-anchor="middle" font-family="&#39;Vazirmatn&#39;, sans-serif" font-size="26.0" fill="#6B5B49" letter-spacing="9.10" direction="rtl">سوغات همدان</text>
+  <text x="360.0" y="551.7" text-anchor="middle" font-family="&#39;Vazirmatn&#39;, sans-serif" font-size="26.0" fill="#6B5B49" direction="rtl">سوغات همدان</text>
 </svg>

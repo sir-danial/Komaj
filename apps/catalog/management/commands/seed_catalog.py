@@ -148,7 +148,9 @@ class Command(BaseCommand):
                           "category": cat, "is_active": True},
             )
             for vdata in variants:
-                ProductVariant.objects.update_or_create(
+                # stock is live operational data (decremented by paid orders,
+                # adjusted in admin) — seed it only on first create, never reset
+                variant, created = ProductVariant.objects.update_or_create(
                     sku=vdata["sku"],
                     defaults={
                         "product": product,
@@ -156,10 +158,12 @@ class Command(BaseCommand):
                         "weight_grams": vdata.get("weight_grams"),
                         "unit_price": Decimal(vdata["unit_price"]),
                         "min_order_qty": vdata.get("min_order_qty", 1),
-                        "stock_qty": vdata["stock_qty"],
                         "is_active": True,
                     },
                 )
+                if created:
+                    variant.stock_qty = vdata["stock_qty"]
+                    variant.save(update_fields=["stock_qty"])
             # retire variants that fell out of the lineup (e.g. old per-kg SKUs);
             # they may be referenced by past orders, so deactivate — never delete
             product.variants.exclude(sku__in=[v["sku"] for v in variants]).filter(
