@@ -18,10 +18,10 @@
   <text x="448" y="164" text-anchor="end" font-family="&#39;Vazirmatn&#39;, sans-serif" font-size="13" font-weight="600" fill="#2E1F14" direction="rtl">زعفرانی</text>
   <text x="448" y="184" text-anchor="end" font-family="&#39;Vazirmatn&#39;, sans-serif" font-size="10.5" fill="#8C7A63" direction="rtl">اکسنت اصلی · حلوازرده · شیرمال زعفرانی</text>
   <rect x="24" y="24" width="210" height="168" rx="12" fill="#FFFFFF"></rect>
-  <path d="M 24 36 a 12 12 0 0 1 12 -12 h 186 a 12 12 0 0 1 12 12 v 80 h -210 z" fill="#A8821F" stroke="rgba(46,31,20,.08)"></path>
-  <text x="220" y="142" text-anchor="end" font-family="&#39;Vazirmatn&#39;, sans-serif" font-size="15" font-weight="700" fill="#2E1F14">#A8821F</text>
-  <text x="220" y="164" text-anchor="end" font-family="&#39;Vazirmatn&#39;, sans-serif" font-size="13" font-weight="600" fill="#2E1F14" direction="rtl">زعفرانی تیره</text>
-  <text x="220" y="184" text-anchor="end" font-family="&#39;Vazirmatn&#39;, sans-serif" font-size="10.5" fill="#8C7A63" direction="rtl">حلوا زرده (روغن حیوانی)</text>
+  <path d="M 24 36 a 12 12 0 0 1 12 -12 h 186 a 12 12 0 0 1 12 12 v 80 h -210 z" fill="#DE6C31" stroke="rgba(46,31,20,.08)"></path>
+  <text x="220" y="142" text-anchor="end" font-family="&#39;Vazirmatn&#39;, sans-serif" font-size="15" font-weight="700" fill="#2E1F14">#DE6C31</text>
+  <text x="220" y="164" text-anchor="end" font-family="&#39;Vazirmatn&#39;, sans-serif" font-size="13" font-weight="600" fill="#2E1F14" direction="rtl">نارنجی حیوانی</text>
+  <text x="220" y="184" text-anchor="end" font-family="&#39;Vazirmatn&#39;, sans-serif" font-size="10.5" fill="#8C7A63" direction="rtl">حلوا زرده (روغن حیوانی) — متمایز از حلوا زرده معمولی</text>
   <rect x="708" y="210" width="210" height="168" rx="12" fill="#FFFFFF"></rect>
   <path d="M 708 222 a 12 12 0 0 1 12 -12 h 186 a 12 12 0 0 1 12 12 v 80 h -210 z" fill="#7A8B3D" stroke="rgba(46,31,20,.08)"></path>
   <text x="904" y="328" text-anchor="end" font-family="&#39;Vazirmatn&#39;, sans-serif" font-size="15" font-weight="700" fill="#2E1F14">#7A8B3D</text>

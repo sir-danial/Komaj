@@ -4,16 +4,16 @@
   <circle cx="400.0" cy="400.0" r="379.6" fill="#FAF6EE"></circle>
   <circle cx="400.0" cy="400.0" r="389.8" fill="none" stroke="#9C2B3B" stroke-width="20.4"></circle>
   <circle cx="400.0" cy="400.0" r="328.5" fill="none" stroke="#9C2B3B" stroke-width="1" stroke-dasharray="6 7"></circle>
-  <rect x="303.7" y="168.3" width="52.5" height="1.0" fill="#7A8B3D"></rect>
-  <rect x="443.8" y="168.3" width="52.5" height="1.0" fill="#7A8B3D"></rect>
-  <rect x="-5.84" y="-5.84" width="11.68" height="11.68" fill="#C79A2C" rx="1.9" transform="translate(373.7,168.9) rotate(45)"></rect>
-  <rect x="-8.76" y="-8.76" width="17.52" height="17.52" fill="#9C2B3B" rx="2.9" transform="translate(400.0,168.9) rotate(45)"></rect>
-  <rect x="-5.84" y="-5.84" width="11.68" height="11.68" fill="#C79A2C" rx="1.9" transform="translate(426.3,168.9) rotate(45)"></rect>
-  <text x="400.0" y="304.6" text-anchor="middle" font-family="&#39;Noto Nastaliq Urdu&#39;, serif" font-size="81.8" fill="#2E1F14" font-weight="700" direction="rtl">کماج</text>
-  <text x="400.0" y="354.4" text-anchor="middle" font-family="&#39;Vazirmatn&#39;, sans-serif" font-size="17.5" fill="#8C7A63" direction="rtl">سوغات همدان</text>
-  <text x="400.0" y="467.0" text-anchor="middle" font-family="&#39;Noto Nastaliq Urdu&#39;, serif" font-size="55.5" fill="#9C2B3B" font-weight="600" direction="rtl">معجون مخصوص</text>
-  <rect x="356.0" y="503.4" width="88.0" height="3.0" fill="#9C2B3B" rx="1.5"></rect>
-  <text x="400.0" y="550.4" text-anchor="middle" font-family="&#39;Vazirmatn&#39;, sans-serif" font-size="20.4" fill="#6B5B49" direction="rtl">تلفن: ۰۸۱-۳۸۲۵۴۰۰۰</text>
-  <text x="400.0" y="589.2" text-anchor="middle" font-family="&#39;Vazirmatn&#39;, sans-serif" font-size="20.4" fill="#6B5B49" direction="rtl">همدان، میدان امام، بازار سنتی</text>
-  <text x="400.0" y="630.9" text-anchor="middle" font-family="&#39;Marcellus&#39;, serif" font-size="21.9" fill="#2E1F14" letter-spacing="1.53">komaj.shop</text>
+  <rect x="443.8" y="164.9" width="52.5" height="1.0" fill="#7A8B3D"></rect>
+  <rect x="303.7" y="164.9" width="52.5" height="1.0" fill="#7A8B3D"></rect>
+  <rect x="-5.84" y="-5.84" width="11.68" height="11.68" fill="#C79A2C" rx="1.9" transform="translate(426.3,165.4) rotate(45)"></rect>
+  <rect x="-8.76" y="-8.76" width="17.52" height="17.52" fill="#9C2B3B" rx="2.9" transform="translate(400.0,165.4) rotate(45)"></rect>
+  <rect x="-5.84" y="-5.84" width="11.68" height="11.68" fill="#C79A2C" rx="1.9" transform="translate(373.7,165.4) rotate(45)"></rect>
+  <text x="400.0" y="301.2" text-anchor="middle" font-family="&#39;Noto Nastaliq Urdu&#39;, serif" font-size="81.8" fill="#2E1F14" font-weight="700" direction="rtl">کماج</text>
+  <text x="400.0" y="351.0" text-anchor="middle" font-family="&#39;Vazirmatn&#39;, sans-serif" font-size="17.5" fill="#8C7A63" direction="rtl">سوغات همدان</text>
+  <text x="400.0" y="463.6" text-anchor="middle" font-family="&#39;Noto Nastaliq Urdu&#39;, serif" font-size="55.5" fill="#9C2B3B" font-weight="600" direction="rtl">معجون مخصوص</text>
+  <rect x="356.0" y="500.0" width="88.0" height="3.0" fill="#9C2B3B" rx="1.5"></rect>
+  <text x="400.0" y="585.8" text-anchor="middle" font-family="&#39;Vazirmatn&#39;, sans-serif" font-size="20.4" fill="#6B5B49" direction="rtl">تلفن: ⁦۰۸۱-۳۸۲۵۴۰۰۰⁩</text>
+  <text x="400.0" y="547.0" text-anchor="middle" font-family="&#39;Vazirmatn&#39;, sans-serif" font-size="20.4" fill="#6B5B49" direction="rtl">همدان، میدان امام، بازار سنتی</text>
+  <text x="400.0" y="631.4" text-anchor="middle" font-family="&#39;Vazirmatn&#39;, sans-serif" font-size="21.9" fill="#2E1F14" font-weight="600" letter-spacing="1.31">komaj.shop</text>
 </svg>
