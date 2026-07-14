@@ -4,7 +4,7 @@ Product card.
 Params:
   product (dict-like)
     .name          *
-    .subtitle        — ویژگی فرعی، ریزتر زیر نام (مثل «روغن حیوانی»)
+    .subtitle        — ویژگی فرعی؛ داخل پرانتز کنار نام می‌آید (مثل «روغن حیوانی»)
     .href          *
     .image_url     *
     .image_alt
@@ -30,14 +30,10 @@ Params:
     </a>
 
     <div class="mt-3 flex flex-col gap-1.5">
-        <div class="w-fit">
-            <h3 class="text-h3 text-espresso line-clamp-2">
-                <a href="{{ product.href }}" class="hover:text-saffron">{{ product.name }}</a>
-            </h3>
-            {% if product.subtitle %}
-                <p class="text-body-sm text-heyvani text-end">{{ product.subtitle }}</p>
-            {% endif %}
-        </div>
+        {# زیرعنوان داخل خود عنوان می‌آید (پرانتز) تا ارتفاع کارت‌ها هم‌سطح بماند #}
+        <h3 class="text-h3 text-espresso line-clamp-2">
+            <a href="{{ product.href }}" class="hover:text-saffron">{{ product.name }}{% if product.subtitle %} <span class="text-heyvani">({{ product.subtitle }})</span>{% endif %}</a>
+        </h3>
         <div class="flex items-baseline gap-2">
             {% if product.old_price %}
                 <span class="price-old text-body-sm">{{ product.old_price|toman }}</span>
@@ -49,7 +45,8 @@ Params:
         </div>
     </div>
 
-    <div class="mt-4">
+    {# mt-auto: دکمه‌ها ته کارت می‌چسبند تا در یک ردیف هم‌تراز باشند #}
+    <div class="mt-auto pt-4">
         <a href="{{ product.href }}" class="btn btn-primary w-full">مشاهده و خرید</a>
     </div>
 </article>

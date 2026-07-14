@@ -53,3 +53,34 @@ def test_home_lists_featured(client, product):
     resp = client.get("/")
     assert resp.status_code == 200
     assert "کلمپه" in resp.content.decode()
+
+
+def test_variant_image_follows_the_selected_box(client, db):
+    """Picking «جعبه نیم کیلویی» must show that box's art, not the 1kg one."""
+    import re
+    from apps.catalog.models import Category, Product, ProductImage, ProductVariant
+    from django.core.files.uploadedfile import SimpleUploadedFile
+
+    # 1x1 gif — enough for ImageField
+    gif = (b"GIF87a\x01\x00\x01\x00\x80\x01\x00\x00\x00\x00ccc,\x00\x00\x00\x00"
+           b"\x01\x00\x01\x00\x00\x02\x02D\x01\x00;")
+    cat = Category.objects.create(name="شیرینی جعبه‌ای", slug="sw2")
+    p = Product.objects.create(name="شیرمال", slug="shirmal-x", category=cat,
+                               sale_unit=Product.WEIGHT)
+    half = ProductVariant.objects.create(product=p, sku="X-05", label="جعبه نیم کیلویی",
+                                         unit_price=Decimal("130000"), min_order_qty=1,
+                                         stock_qty=10)
+    one = ProductVariant.objects.create(product=p, sku="X-1", label="جعبه یک کیلویی",
+                                        unit_price=Decimal("260000"), min_order_qty=1,
+                                        stock_qty=10)
+    # gallery order deliberately puts the 1kg image first — the page must still
+    # open on the cheapest (pre-selected) variant's art
+    ProductImage.objects.create(product=p, variant=one, sort_order=0,
+                                image=SimpleUploadedFile("one.gif", gif, "image/gif"))
+    ProductImage.objects.create(product=p, variant=half, sort_order=1,
+                                image=SimpleUploadedFile("half.gif", gif, "image/gif"))
+
+    body = client.get(p.get_absolute_url()).content.decode()
+    main = re.search(r'id="main-image" src="([^"]+)"', body).group(1)
+    assert main == half.image.url          # cheapest variant is pre-selected
+    assert f'data-image="{one.image.url}"' in body   # switching updates the art

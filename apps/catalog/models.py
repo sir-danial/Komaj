@@ -140,6 +140,11 @@ class Product(models.Model):
 
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, related_name="images", on_delete=models.CASCADE)
+    variant = models.ForeignKey(
+        "ProductVariant", related_name="images", on_delete=models.SET_NULL,
+        null=True, blank=True, verbose_name="نوع محصول",
+        help_text="اگر تصویر مخصوص یک جعبه/ظرف است، آن را انتخاب کنید",
+    )
     image = models.ImageField("تصویر", upload_to="products/")
     alt = models.CharField("متن جایگزین", max_length=200, blank=True)
     sort_order = models.PositiveIntegerField("ترتیب", default=0)
@@ -198,6 +203,12 @@ class ProductVariant(models.Model):
     @property
     def in_stock(self):
         return self.stock_qty >= self.min_order_qty
+
+    @property
+    def image(self):
+        """The box/jar art for this exact package, falling back to the product's."""
+        own = self.images.first()
+        return own.image if own else self.product.primary_image
 
     def validate_quantity(self, quantity):
         """Validate an order quantity: a whole number of packages within

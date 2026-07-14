@@ -63,8 +63,8 @@ PRODUCTS = [
              "unit_price": "500000", "stock_qty": 20},
         ],
         "images": [
-            ("komaj-1kg.png", "جعبه یک کیلویی کماج درجه یک"),
-            ("komaj-2kg.png", "جعبه دو کیلویی کماج درجه یک"),
+            ("komaj-1kg.png", "جعبه یک کیلویی کماج درجه یک", "KOM-1KG"),
+            ("komaj-2kg.png", "جعبه دو کیلویی کماج درجه یک", "KOM-2KG"),
         ],
     },
     {
@@ -80,9 +80,9 @@ PRODUCTS = [
              "unit_price": "440000", "stock_qty": 20},
         ],
         "images": [
-            ("shirmal-korei-1kg.png", "جعبه یک کیلویی شیرمال مرغوب کره‌ای"),
-            ("shirmal-korei-05kg.png", "جعبه نیم کیلویی شیرمال مرغوب کره‌ای"),
-            ("shirmal-korei-2kg.png", "جعبه دو کیلویی شیرمال مرغوب کره‌ای"),
+            ("shirmal-korei-05kg.png", "جعبه نیم کیلویی شیرمال مرغوب کره‌ای", "SHK-05KG"),
+            ("shirmal-korei-1kg.png", "جعبه یک کیلویی شیرمال مرغوب کره‌ای", "SHK-1KG"),
+            ("shirmal-korei-2kg.png", "جعبه دو کیلویی شیرمال مرغوب کره‌ای", "SHK-2KG"),
         ],
     },
     {
@@ -98,9 +98,9 @@ PRODUCTS = [
              "unit_price": "520000", "stock_qty": 20},
         ],
         "images": [
-            ("shirmal-zafarani-1kg.png", "جعبه یک کیلویی شیرمال مرغوب زعفرانی"),
-            ("shirmal-zafarani-05kg.png", "جعبه نیم کیلویی شیرمال مرغوب زعفرانی"),
-            ("shirmal-zafarani-2kg.png", "جعبه دو کیلویی شیرمال مرغوب زعفرانی"),
+            ("shirmal-zafarani-05kg.png", "جعبه نیم کیلویی شیرمال مرغوب زعفرانی", "SHZ-05KG"),
+            ("shirmal-zafarani-1kg.png", "جعبه یک کیلویی شیرمال مرغوب زعفرانی", "SHZ-1KG"),
+            ("shirmal-zafarani-2kg.png", "جعبه دو کیلویی شیرمال مرغوب زعفرانی", "SHZ-2KG"),
         ],
     },
     {
@@ -111,7 +111,7 @@ PRODUCTS = [
             {"sku": "HLZ-450", "label": "ظرف ۴۵۰ گرمی", "weight_grams": JAR_GRAMS,
              "unit_price": "350000", "stock_qty": 30},
         ],
-        "images": [("halva-zarde.png", "ظرف حلوا زرده اعلا")],
+        "images": [("halva-zarde.png", "ظرف حلوا زرده اعلا", "HLZ-450")],
     },
     {
         "slug": "halva-zarde-heyvani", "name": "حلوا زرده اعلا", "subtitle": "روغن حیوانی",
@@ -122,7 +122,7 @@ PRODUCTS = [
             {"sku": "HLZH-450", "label": "ظرف ۴۵۰ گرمی", "weight_grams": JAR_GRAMS,
              "unit_price": "450000", "stock_qty": 20},
         ],
-        "images": [("halva-zarde-heyvani.png", "ظرف حلوا زرده اعلا با روغن حیوانی")],
+        "images": [("halva-zarde-heyvani.png", "ظرف حلوا زرده اعلا با روغن حیوانی", "HLZH-450")],
     },
     {
         "slug": "angosht-pich", "name": "انگشت‌پیچ ویژه", "category": "jars",
@@ -132,7 +132,7 @@ PRODUCTS = [
             {"sku": "ANG-450", "label": "ظرف ۴۵۰ گرمی", "weight_grams": JAR_GRAMS,
              "unit_price": "320000", "stock_qty": 25},
         ],
-        "images": [("angosht-pich.png", "ظرف انگشت‌پیچ ویژه")],
+        "images": [("angosht-pich.png", "ظرف انگشت‌پیچ ویژه", "ANG-450")],
     },
     {
         "slug": "majoon", "name": "معجون مخصوص", "category": "jars",
@@ -142,7 +142,7 @@ PRODUCTS = [
             {"sku": "MAJ-450", "label": "ظرف ۴۵۰ گرمی", "weight_grams": JAR_GRAMS,
              "unit_price": "400000", "stock_qty": 25},
         ],
-        "images": [("majoon.png", "ظرف معجون مخصوص")],
+        "images": [("majoon.png", "ظرف معجون مخصوص", "MAJ-450")],
     },
 ]
 
@@ -197,28 +197,34 @@ class Command(BaseCommand):
             # re-uploaded whenever the seed art changes (compared by content
             # hash) — otherwise a redesigned box/label would never reach a
             # deployed site, whose DB already has the old image row.
-            for sort_order, (filename, alt) in enumerate(images):
+            by_sku = {v.sku: v for v in product.variants.all()}
+            for sort_order, (filename, alt, sku) in enumerate(images):
                 source = SEED_IMAGES / filename
+                variant = by_sku.get(sku)
                 existing = ProductImage.objects.filter(
                     product=product, sort_order=sort_order
                 ).first()
                 if existing and _same_content(existing.image, source):
-                    if existing.alt != alt:
+                    if existing.alt != alt or existing.variant_id != (
+                        variant.pk if variant else None
+                    ):
                         existing.alt = alt
-                        existing.save(update_fields=["alt"])
+                        existing.variant = variant
+                        existing.save(update_fields=["alt", "variant"])
                     continue
                 with source.open("rb") as fh:
                     if existing:
                         existing.alt = alt
+                        existing.variant = variant
                         # save() the new file under the same row; the old file is
                         # left on disk/S3 rather than risking a live 404 mid-deploy
                         existing.image.save(filename, File(fh), save=False)
-                        existing.save(update_fields=["alt", "image"])
+                        existing.save(update_fields=["alt", "variant", "image"])
                         refreshed += 1
                     else:
                         ProductImage.objects.create(
-                            product=product, alt=alt, sort_order=sort_order,
-                            image=File(fh, name=filename),
+                            product=product, variant=variant, alt=alt,
+                            sort_order=sort_order, image=File(fh, name=filename),
                         )
 
         # the lineup above is the whole catalog — retire anything else

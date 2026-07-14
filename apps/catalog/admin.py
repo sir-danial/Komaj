@@ -14,6 +14,15 @@ class CategoryAdmin(admin.ModelAdmin):
 class ProductImageInline(admin.TabularInline):
     model = ProductImage
     extra = 1
+    fields = ["image", "variant", "alt", "sort_order"]
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        # only this product's variants may own its images
+        if db_field.name == "variant" and request.resolver_match:
+            obj_id = request.resolver_match.kwargs.get("object_id")
+            if obj_id:
+                kwargs["queryset"] = ProductVariant.objects.filter(product_id=obj_id)
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 
 class ProductVariantInline(admin.TabularInline):

@@ -12,7 +12,10 @@
     <div class="space-y-3">
         <div class="aspect-product rounded-xl bg-sand overflow-hidden flex items-center justify-center">
             {% if images %}
-                <img id="main-image" src="{{ images.0.image.url }}" alt="{{ images.0.alt|default:product.name }}" class="h-full w-full object-cover">
+                {# تصویر اولیه = عکسِ همان جعبه‌ای که پیش‌فرض انتخاب شده (ارزان‌ترین) #}
+                {% with sel=variants.0.image %}
+                <img id="main-image" src="{{ sel.url|default:images.0.image.url }}" alt="{{ product.full_name }}" class="h-full w-full object-cover">
+                {% endwith %}
             {% else %}
                 <span class="text-espresso/30 text-body-sm">🖼 تصویر محصول (به‌زودی)</span>
             {% endif %}
@@ -56,7 +59,7 @@
                     <label class="cursor-pointer">
                         <input type="radio" name="variant_id" value="{{ v.pk }}" class="peer sr-only"
                                data-price="{{ v.unit_price }}" data-unit="{{ v.unit_label }}"
-                               data-min="{{ v.min_order_qty }}"
+                               data-min="{{ v.min_order_qty }}" data-image="{{ v.image.url }}"
                                {% if forloop.first %}checked{% endif %}
                                {% if not v.in_stock %}disabled{% endif %}>
                         <span class="badge badge-sand peer-checked:badge-saffron peer-disabled:opacity-40 px-4 py-2">
@@ -70,7 +73,7 @@
                 {% with v=variants.0 %}
                 <input type="hidden" name="variant_id" value="{{ v.pk }}"
                        data-price="{{ v.unit_price }}" data-unit="{{ v.unit_label }}"
-                       data-min="{{ v.min_order_qty }}">
+                       data-min="{{ v.min_order_qty }}" data-image="{{ v.image.url }}">
                 {% endwith %}
             {% endif %}
 
@@ -157,6 +160,9 @@
     if (toInt(qty.value) < minQty()) qty.value = faDigits(minQty());
     if (unitPriceEl) unitPriceEl.textContent = groupFa(v.dataset.price);
     [unitLabelEl, qtyUnitEl].forEach(el => { if (el) el.textContent = v.dataset.unit; });
+    // گالری همان جعبه/ظرف انتخاب‌شده را نشان می‌دهد
+    const mainImage = document.getElementById('main-image');
+    if (mainImage && v.dataset.image) mainImage.src = v.dataset.image;
     recompute();
   }
 
