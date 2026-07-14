@@ -1,4 +1,4 @@
-{% load static %}
+{% load static payment_tags %}
 <footer class="mt-20 bg-sand/60 border-t border-sand">
     <div class="container-page py-12">
         <div class="grid gap-8 md:grid-cols-4">
@@ -37,6 +37,7 @@
                 <div class="mt-5 flex items-center gap-3">
                     <div class="h-16 w-16 rounded-md bg-cream border border-sand flex items-center justify-center text-tiny text-espresso/50">اینماد</div>
                     <div class="h-16 w-16 rounded-md bg-cream border border-sand flex items-center justify-center text-tiny text-espresso/50">ساماندهی</div>
+                    {% zibal_trust_badge %}
                 </div>
             </div>
         </div>

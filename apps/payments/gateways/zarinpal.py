@@ -1,12 +1,12 @@
 """Zarinpal gateway (Iran, under Shaparak). API v4.
 
-Amounts are sent in **Rial** (``currency: IRR``). Selected automatically when
-``ZARINPAL_MERCHANT_ID`` is configured; otherwise the app falls back to the mock
-gateway so the flow is exercisable without credentials.
+Amounts are sent in **Rial** (``currency: IRR``). Kept alongside Zibal so the
+merchant can switch providers with an env var; see gateways/__init__.py.
 """
 import requests
+from django.utils import timezone
 
-from .base import InitResponse, PaymentGateway, VerifyResponse
+from .base import CallbackResult, InitResponse, PaymentError, PaymentGateway, VerifyResponse
 
 PROD_BASE = "https://payment.zarinpal.com/pg/v4"
 SANDBOX_BASE = "https://sandbox.zarinpal.com/pg/v4"
@@ -48,6 +48,14 @@ class ZarinpalGateway(PaymentGateway):
             raw=payload,
         )
 
+    def parse_callback(self, params):
+        """Zarinpal returns ?Authority=..&Status=OK|NOK"""
+        return CallbackResult(
+            authority=params.get("Authority") or params.get("authority", ""),
+            success=(params.get("Status") or params.get("status", "")) == "OK",
+            raw=dict(params.items()),
+        )
+
     def verify(self, authority, amount_rial):
         resp = requests.post(
             f"{self.base}/payment/verify.json",
@@ -61,12 +69,15 @@ class ZarinpalGateway(PaymentGateway):
         success = code in (100, 101)
         return VerifyResponse(
             success=success,
+            paid=success,
+            verified=success,
             ref_id=str(data.get("ref_id", "")),
+            card_number=str(data.get("card_pan") or ""),
+            card_hash=str(data.get("card_hash") or ""),
+            amount_rial=amount_rial if success else None,
+            paid_at=timezone.now() if success else None,
+            verified_at=timezone.now() if success else None,
             code=str(code),
             message=("پرداخت تأیید شد" if success else "تأیید پرداخت ناموفق بود"),
             raw=payload,
         )
-
-
-class PaymentError(Exception):
-    pass

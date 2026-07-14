@@ -2,18 +2,16 @@ import logging
 
 from django.conf import settings
 from django.contrib import messages
-from django.db import transaction
-from django.db.models import F
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 
 from apps.cart.cart import Cart
-from apps.catalog.models import ProductVariant
 from apps.orders.models import Order
 
 from .gateways import PaymentError, get_gateway
 from .models import Payment
+from .services import verify_and_settle
 
 logger = logging.getLogger(__name__)
 
@@ -39,8 +37,9 @@ def payment_start(request, token):
     except Exception as exc:  # PaymentError or network/provider errors
         logger.exception("payment request failed for order %s", order.code)
         payment.status = Payment.FAILED
+        payment.gateway_message = str(exc)[:255]
         payment.raw_response = {"error": str(exc)}
-        payment.save(update_fields=["status", "raw_response", "updated_at"])
+        payment.save(update_fields=["status", "gateway_message", "raw_response", "updated_at"])
         messages.error(request, "اتصال به درگاه پرداخت ناموفق بود. لطفاً دوباره تلاش کنید.")
         return redirect(order.get_absolute_url())
 
@@ -51,65 +50,53 @@ def payment_start(request, token):
 
 
 def payment_callback(request):
-    """Return point from the gateway. Zarinpal sends ?Authority=..&Status=OK|NOK."""
-    authority = request.GET.get("Authority") or request.GET.get("authority", "")
-    status = request.GET.get("Status") or request.GET.get("status", "")
-    payment = get_object_or_404(Payment.objects.select_related("order"), authority=authority)
+    """Return point from the gateway.
+
+    Zibal sends ?success=1|0&trackId=..&orderId=..&status=..; each gateway parses
+    its own shape. The provider's "success" flag is only a hint — the order is
+    settled solely on the strength of a successful verify call.
+    """
+    gateway = get_gateway()
+    result = gateway.parse_callback(request.GET)
+    if not result.authority:
+        raise Http404("callback without a transaction id")
+
+    payment = get_object_or_404(
+        Payment.objects.select_related("order"), authority=result.authority
+    )
     order = payment.order
 
-    if status != "OK":
-        payment.status = Payment.FAILED
-        payment.save(update_fields=["status", "updated_at"])
+    if result.card_hash and not payment.card_hash:
+        payment.card_hash = result.card_hash
+        payment.save(update_fields=["card_hash", "updated_at"])
+
+    if not result.success:
+        if payment.status != Payment.PAID:
+            payment.status = Payment.FAILED
+            payment.save(update_fields=["status", "updated_at"])
         messages.error(request, "پرداخت ناموفق بود یا لغو شد. می‌توانید دوباره تلاش کنید.")
         return redirect(order.get_absolute_url())
 
-    success = _verify_and_settle(payment)
-    if success:
+    try:
+        settled = verify_and_settle(payment)
+    except PaymentError:
+        # Couldn't reach the provider to verify. The customer may well have paid,
+        # so leave the payment PENDING for reconcile_payments to finish.
+        logger.exception("verify unreachable for order %s (trackId %s)",
+                         order.code, payment.authority)
+        messages.warning(
+            request,
+            "پرداخت شما انجام شد اما تأیید نهایی با تأخیر مواجه شده است. "
+            "وضعیت سفارش به‌زودی به‌روزرسانی می‌شود.",
+        )
+        return redirect(order.get_absolute_url())
+
+    if settled:
         Cart(request).clear()
         messages.success(request, "پرداخت با موفقیت انجام شد.")
     else:
         messages.error(request, "تأیید پرداخت ناموفق بود. در صورت کسر وجه طی ۷۲ ساعت بازگردانده می‌شود.")
     return redirect(order.get_absolute_url())
-
-
-def _verify_and_settle(payment):
-    """Verify with the gateway under a row lock so a double callback can't
-    settle the order twice or decrement stock twice."""
-    gateway = get_gateway()
-    with transaction.atomic():
-        payment = Payment.objects.select_for_update().get(pk=payment.pk)
-        order = Order.objects.select_for_update().get(pk=payment.order_id)
-
-        if payment.status == Payment.PAID or order.is_paid:
-            return True  # idempotent: already settled
-
-        result = gateway.verify(payment.authority, order.amount_rial)
-        if not result.success:
-            payment.status = Payment.FAILED
-            payment.raw_response = result.raw
-            payment.save(update_fields=["status", "raw_response", "updated_at"])
-            return False
-
-        payment.status = Payment.PAID
-        payment.ref_id = result.ref_id
-        payment.raw_response = result.raw
-        payment.save(update_fields=["status", "ref_id", "raw_response", "updated_at"])
-
-        order.mark_paid()
-        # decrement stock exactly once, atomically
-        for item in order.items.all():
-            ProductVariant.objects.filter(pk=item.variant_id).update(
-                stock_qty=F("stock_qty") - item.quantity
-            )
-        # low volume + payment already captured: don't fail after capture, but
-        # flag any oversell (stock went negative) for admin follow-up.
-        oversold = ProductVariant.objects.filter(
-            order_items__order=order, stock_qty__lt=0
-        ).values_list("sku", flat=True)
-        if oversold:
-            logger.error("OVERSOLD after paying order %s: variants %s",
-                         order.code, list(oversold))
-    return True
 
 
 def mock_gateway(request, authority):
@@ -120,6 +107,6 @@ def mock_gateway(request, authority):
     callback = reverse("payments:callback")
     return render(request, "payments/mock_gateway.html", {
         "order": payment.order,
-        "approve_url": f"{callback}?Authority={authority}&Status=OK",
-        "cancel_url": f"{callback}?Authority={authority}&Status=NOK",
+        "approve_url": f"{callback}?trackId={authority}&success=1&status=2",
+        "cancel_url": f"{callback}?trackId={authority}&success=0&status=3",
     })

@@ -5,6 +5,11 @@ from .base import env
 
 DEBUG = False
 
+# base.py derives this from DEBUG, which is read from the environment — pin it here
+# so a stray DEBUG=True in prod's env can't switch on the gateway that approves
+# every payment. Set PAYMENTS_ALLOW_MOCK=True explicitly (e.g. staging) to opt in.
+PAYMENTS_ALLOW_MOCK = env.bool("PAYMENTS_ALLOW_MOCK", default=False)
+
 # media lives on the persistent volume (same disk as SQLite) so uploads
 # survive redeploys; overridable once ArvanCloud S3 takes over
 MEDIA_ROOT = Path(env("MEDIA_ROOT", default="/data/media"))

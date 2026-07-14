@@ -11,6 +11,7 @@ def allow_mock_payments(settings):
     """Tests run with DEBUG=False; opt into the mock gateway explicitly.
     Tests that assert the production fail-closed behavior override this to False."""
     settings.PAYMENTS_ALLOW_MOCK = True
+    settings.ZIBAL_MERCHANT = ""
     settings.ZARINPAL_MERCHANT_ID = ""
 
 

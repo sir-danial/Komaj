@@ -171,6 +171,23 @@ SHIPPING_METHODS = [
 SHIPPING_ESTIMATE_KEY = "post"  # method used for the cart-page estimate
 
 # --- Third-party service credentials ---
+# Payment gateway. Zibal is the primary provider: set ZIBAL_MERCHANT and it is
+# used automatically. Zibal's shared test merchant is literally "zibal", which
+# exercises the real endpoints without owning a gateway yet.
+ZIBAL_MERCHANT = env("ZIBAL_MERCHANT", default="")
+# Domain registered with Zibal (no scheme), e.g. "komaj.ir". Set this to show
+# Zibal's trust badge in the footer; empty = no badge (don't claim a gateway we
+# don't have yet).
+ZIBAL_TRUST_SITE = env("ZIBAL_TRUST_SITE", default="")
+# Sweep for payments whose callback never arrived, every N minutes, on a daemon
+# thread in the web container (no Celery in phase 1). On by default so a lost
+# callback can't quietly cost a sale. Set to 0 to turn it off — do that if you
+# move the sweep to a real cron/CronJob running `manage.py reconcile_payments`.
+PAYMENTS_RECONCILE_INTERVAL_MINUTES = env("PAYMENTS_RECONCILE_INTERVAL_MINUTES", default=10)
+# The mock gateway approves every payment, so it follows DEBUG unless explicitly
+# overridden. prod.py pins it to False by default — with no merchant id and no
+# mock, payments fail closed rather than silently "succeeding".
+PAYMENTS_ALLOW_MOCK = env.bool("PAYMENTS_ALLOW_MOCK", default=DEBUG)
 ZARINPAL_MERCHANT_ID = env("ZARINPAL_MERCHANT_ID", default="")
 ZARINPAL_SANDBOX = env("ZARINPAL_SANDBOX")
 KAVENEGAR_API_KEY = env("KAVENEGAR_API_KEY", default="")
