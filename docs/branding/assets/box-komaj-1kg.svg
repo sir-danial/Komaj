@@ -1,19 +1,19 @@
 <?xml version="1.0"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="320mm" height="240mm" viewBox="0 0 800 600">
+<svg xmlns="http://www.w3.org/2000/svg" width="320mm" height="240mm" viewBox="0 0 1280 960">
   <!-- چاپ درِ جعبه کماج درجه یک — 320×240 میلی‌متر — بازتولیدشده از چیدمان flexbox سند برند (خط‌پایه‌ها با مرورگر اندازه‌گیری شده) -->
-  <rect width="800" height="600" fill="#FAF6EE"></rect>
-  <rect x="28.0" y="28.0" width="744.0" height="544.0" rx="12.3" fill="none" stroke="#C79A2C" stroke-width="2"></rect>
-  <rect x="443.8" y="122.5" width="52.3" height="2.0" fill="#7A8B3D"></rect>
-  <rect x="303.9" y="122.5" width="52.3" height="2.0" fill="#7A8B3D"></rect>
-  <rect x="-5.38" y="-5.38" width="10.77" height="10.77" fill="#C79A2C" rx="1.8" transform="translate(426.1,123.5) rotate(45)"></rect>
-  <rect x="-8.46" y="-8.46" width="16.92" height="16.92" fill="#9C2B3B" rx="2.8" transform="translate(400.0,123.5) rotate(45)"></rect>
-  <rect x="-5.38" y="-5.38" width="10.77" height="10.77" fill="#C79A2C" rx="1.8" transform="translate(373.9,123.5) rotate(45)"></rect>
-  <text x="400.0" y="260.0" text-anchor="middle" font-family="&#39;Noto Nastaliq Urdu&#39;, serif" font-size="83.1" fill="#2E1F14" font-weight="700" direction="rtl">کماج</text>
-  <text x="400.0" y="309.8" text-anchor="middle" font-family="&#39;Vazirmatn&#39;, sans-serif" font-size="15.4" fill="#8C7A63" direction="rtl">سوغات همدان</text>
-  <text x="400.0" y="397.1" text-anchor="middle" font-family="&#39;Noto Nastaliq Urdu&#39;, serif" font-size="41.5" fill="#9C2B3B" direction="rtl">کماج درجه یک</text>
-  <text x="400.0" y="442.4" text-anchor="middle" font-family="&#39;Vazirmatn&#39;, sans-serif" font-size="16.9" fill="#6B5B49" direction="rtl">همدان، میدان امام، بازار سنتی · تلفن: ⁦۰۸۱-۳۸۲۵۴۰۰۰⁩</text>
-  <text x="400.0" y="475.0" text-anchor="middle" font-family="&#39;Vazirmatn&#39;, sans-serif" font-size="18.5" fill="#2E1F14" font-weight="600" letter-spacing="1.11">komaj.shop</text>
-  <circle cx="111.0" cy="111.0" r="56.9" fill="#FAF6EE" stroke="#9C2B3B" stroke-width="2"></circle>
-  <text x="111.0" y="105.0" text-anchor="middle" font-family="&#39;Vazirmatn&#39;, sans-serif" font-size="30.8" fill="#2E1F14" font-weight="800" direction="rtl">۱</text>
-  <text x="111.0" y="133.0" text-anchor="middle" font-family="&#39;Vazirmatn&#39;, sans-serif" font-size="15.4" fill="#8C7A63" direction="rtl">کیلوگرم</text>
+  <rect width="1280" height="960" fill="#FAF6EE"></rect>
+  <rect x="44.0" y="44.0" width="1192.0" height="872.0" rx="19.7" fill="none" stroke="#C79A2C" stroke-width="2"></rect>
+  <rect x="710.1" y="197.0" width="83.7" height="2.0" fill="#7A8B3D"></rect>
+  <rect x="486.2" y="197.0" width="83.7" height="2.0" fill="#7A8B3D"></rect>
+  <rect x="-8.62" y="-8.62" width="17.23" height="17.23" fill="#C79A2C" rx="2.9" transform="translate(681.8,198.0) rotate(45)"></rect>
+  <rect x="-13.54" y="-13.54" width="27.08" height="27.08" fill="#9C2B3B" rx="4.5" transform="translate(640.0,198.0) rotate(45)"></rect>
+  <rect x="-8.62" y="-8.62" width="17.23" height="17.23" fill="#C79A2C" rx="2.9" transform="translate(598.2,198.0) rotate(45)"></rect>
+  <text x="640.0" y="417.6" text-anchor="middle" font-family="&#39;Noto Nastaliq Urdu&#39;, serif" font-size="132.9" fill="#2E1F14" font-weight="700" direction="rtl">کماج</text>
+  <text x="640.0" y="495.5" text-anchor="middle" font-family="&#39;Vazirmatn&#39;, sans-serif" font-size="24.6" fill="#8C7A63" direction="rtl">سوغات همدان</text>
+  <text x="640.0" y="634.2" text-anchor="middle" font-family="&#39;Noto Nastaliq Urdu&#39;, serif" font-size="66.5" fill="#9C2B3B" direction="rtl">کماج درجه یک</text>
+  <text x="640.0" y="707.1" text-anchor="middle" font-family="&#39;Vazirmatn&#39;, sans-serif" font-size="27.1" fill="#6B5B49" direction="rtl">همدان، میدان امام، بازار سنتی · تلفن: ⁦۰۸۱-۳۸۲۵۴۰۰۰⁩</text>
+  <text x="640.0" y="759.5" text-anchor="middle" font-family="&#39;Vazirmatn&#39;, sans-serif" font-size="29.5" fill="#2E1F14" font-weight="600" letter-spacing="1.77">komaj.shop</text>
+  <circle cx="177.0" cy="177.0" r="91.1" fill="#FAF6EE" stroke="#9C2B3B" stroke-width="2"></circle>
+  <text x="177.0" y="169.5" text-anchor="middle" font-family="&#39;Vazirmatn&#39;, sans-serif" font-size="49.2" fill="#2E1F14" font-weight="800" direction="rtl">۱</text>
+  <text x="177.0" y="212.5" text-anchor="middle" font-family="&#39;Vazirmatn&#39;, sans-serif" font-size="24.6" fill="#8C7A63" direction="rtl">کیلوگرم</text>
 </svg>

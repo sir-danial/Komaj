@@ -10,11 +10,11 @@
 <section class="section grid gap-8 lg:grid-cols-2">
     {# --- Gallery --- #}
     <div class="space-y-3">
-        <div class="aspect-product rounded-xl bg-sand overflow-hidden flex items-center justify-center">
+        <div class="aspect-[4/3] rounded-xl bg-cream border border-sand overflow-hidden flex items-center justify-center p-4">
             {% if images %}
                 {# تصویر اولیه = عکسِ همان جعبه‌ای که پیش‌فرض انتخاب شده (ارزان‌ترین) #}
                 {% with sel=variants.0.image %}
-                <img id="main-image" src="{{ sel.url|default:images.0.image.url }}" alt="{{ product.full_name }}" class="h-full w-full object-cover">
+                <img id="main-image" src="{{ sel.url|default:images.0.image.url }}" alt="{{ product.full_name }}" class="max-h-full max-w-full object-contain">
                 {% endwith %}
             {% else %}
                 <span class="text-espresso/30 text-body-sm">🖼 تصویر محصول (به‌زودی)</span>
@@ -23,9 +23,9 @@
         {% if images|length > 1 %}
             <div class="grid grid-cols-5 gap-2">
                 {% for img in images %}
-                    <button type="button" class="aspect-square rounded-lg overflow-hidden bg-sand border border-sand hover:border-saffron"
+                    <button type="button" class="aspect-square rounded-lg overflow-hidden bg-cream border border-sand hover:border-saffron flex items-center justify-center p-1"
                             onclick="document.getElementById('main-image').src='{{ img.image.url }}'">
-                        <img src="{{ img.image.url }}" alt="{{ img.alt|default:product.name }}" class="h-full w-full object-cover">
+                        <img src="{{ img.image.url }}" alt="{{ img.alt|default:product.name }}" class="max-h-full max-w-full object-contain">
                     </button>
                 {% endfor %}
             </div>
